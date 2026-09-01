@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find a Kappa League | National Guide Right Commission</title>
+<meta name="description" content="Locate active Kappa League programs by ZIP code or city, view meeting schedules and apply directly to a local chapter.">
+<meta property="og:title" content="Find a Kappa League | National Guide Right Commission">
+<meta property="og:description" content="Locate active Kappa League programs by ZIP code or city, view meeting schedules and apply directly to a local chapter.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+</head>
+<body data-page="locator.html">
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="utility">
+  <div class="shell utility__inner">
+    <span class="utility__tag">Youth leadership and development, grades 6 through 12</span>
+    <nav class="utility__links" aria-label="Utility">
+      <a href="chapters.html">Chapter Portal Login</a>
+      <a href="about.html#contact">Contact Us</a>
+      <a href="donate.html#transparency">Tax-Deductible 501(c)(3) Info</a>
+    </nav>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="shell masthead__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">GR</span>
+      <span class="brand__text">
+        <span class="brand__name">National Guide Right Commission</span>
+        <span class="brand__sub">Kappa Alpha Psi Fraternity, Inc.</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Primary"><a href="about.html">About Us</a><a href="kappa-league.html">Kappa League</a><a href="seven-phases.html">7 Phases</a><a href="kamp-kappa.html">Kamp Kappa &amp; STEM</a><a href="news.html">News &amp; Impact</a></nav>
+
+    <div class="masthead__actions">
+      <a class="btn btn--primary" href="locator.html">Find Kappa League</a>
+      <a class="btn btn--gold" href="donate.html">Donate</a>
+    </div>
+
+    <button class="hamburger" id="drawer-open" type="button" aria-expanded="false" aria-controls="drawer">
+      <span class="hamburger__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      Menu
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" data-open="false" role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="drawer__scrim" data-drawer-close></div>
+  <div class="drawer__panel">
+    <div class="drawer__head">
+      <span class="kicker">Menu</span>
+      <button class="drawer__close" type="button" data-drawer-close aria-label="Close menu">&times;</button>
+    </div>
+    <nav class="drawer__nav" aria-label="Mobile"><a href="about.html">About Us</a><a href="kappa-league.html">Kappa League</a><a href="seven-phases.html">7 Phases</a><a href="kamp-kappa.html">Kamp Kappa &amp; STEM</a><a href="news.html">News &amp; Impact</a><a href="parents.html">For Parents &amp; Students</a><a href="chapters.html">Chapter Officer Resources</a><a href="locator.html" aria-current="page">Find a Kappa League</a><a href="donate.html">Support the Commission</a></nav>
+    <div class="drawer__actions">
+      <a class="btn btn--primary btn--block" href="locator.html">Find Kappa League</a>
+      <a class="btn btn--gold btn--block" href="donate.html">Donate</a>
+    </div>
+    <p class="drawer__meta">The National Guide Right Commission is the youth mentorship arm of Kappa Alpha Psi Fraternity, Inc.</p>
+  </div>
+</div>
+
+<main id="main">
+
+<section class="pagehead">
+  <div class="shell">
+    <p class="crumbs"><a href="index.html">Home</a> &rsaquo; Find a Kappa League</p>
+    <h1>Find a Kappa League program</h1>
+    <p class="lede measure">Search active programs by ZIP code or city. Each result shows meeting schedule, grade bands, application status and a direct line to the chapter Guide Right Chairman.</p>
+    
+  </div>
+</section>
+
+<section class="section locator-section" id="find">
+  <div class="shell shell--wide">
+    
+    <div class="sample-banner">
+      <strong>Sample data.</strong>
+      <span>Chapter records below are structural placeholders for build and testing. Replace <code>assets/data/chapters.json</code> with records verified by the Commission before launch.</span>
+    </div>
+
+    <div class="locator" id="locator" data-view="list" data-source="assets/data/chapters.json">
+      <div class="locator__bar">
+        <form class="locator__row" id="loc-form" role="search">
+          <div class="field">
+            <label for="loc-query">ZIP code or city and state</label>
+            <input type="search" id="loc-query" name="q" placeholder="76201 or Denton, TX" autocomplete="postal-code" inputmode="search">
+          </div>
+          <div class="field">
+            <label for="loc-radius">Distance</label>
+            <select id="loc-radius" name="radius">
+              <option value="10">Within 10 miles</option>
+              <option value="25" selected>Within 25 miles</option>
+              <option value="50">Within 50 miles</option>
+              <option value="100">Within 100 miles</option>
+            </select>
+          </div>
+          <button class="btn btn--primary" type="submit">Search</button>
+          <button class="btn btn--outline" type="button" id="loc-geo">Use my location</button>
+        </form>
+
+        <div class="filters" role="group" aria-label="Program filters">
+          <button type="button" class="pill" data-filter="has_league" aria-pressed="true">
+            <span class="pill__box" aria-hidden="true">&#10003;</span> Has active Kappa League
+          </button>
+          <button type="button" class="pill" data-filter="accepting" aria-pressed="false">
+            <span class="pill__box" aria-hidden="true">&#10003;</span> Currently accepting applications
+          </button>
+          <button type="button" class="pill" data-filter="junior" aria-pressed="false">
+            <span class="pill__box" aria-hidden="true">&#10003;</span> Junior League, grades 6&ndash;8
+          </button>
+          <button type="button" class="pill" data-filter="senior" aria-pressed="false">
+            <span class="pill__box" aria-hidden="true">&#10003;</span> Senior League, grades 9&ndash;12
+          </button>
+        </div>
+
+        <div class="view-toggle" role="group" aria-label="Result view">
+          <button type="button" data-view-btn="list" aria-pressed="true">List view</button>
+          <button type="button" data-view-btn="map" aria-pressed="false">Map view</button>
+        </div>
+      </div>
+
+      <p id="loc-status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+      <div class="locator__split">
+        <div class="locator__results" id="loc-results" aria-label="Search results">
+          <p class="locator__count" id="loc-count">Loading</p>
+          <div id="loc-list"></div>
+        </div>
+        <div class="locator__map" id="loc-map" role="application" aria-label="Map of Kappa League programs"></div>
+      </div>
+      <p class="small muted" style="margin-top:.85rem;">Sorted by distance from your search location. Programs marked <em>in formation</em> have no chartered League yet and route to an interest list.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Application modal ------------------------------------------------------>
+<div class="modal" id="modal-apply" data-open="false" role="dialog" aria-modal="true" aria-labelledby="apply-title">
+  <div class="modal__scrim" data-modal-close></div>
+  <div class="modal__panel">
+    <div class="modal__head">
+      <div>
+        <h2 id="apply-title">Apply to this Kappa League</h2>
+        <p class="small muted" style="margin:0;">Takes about four minutes. A chapter officer follows up with orientation details.</p>
+      </div>
+      <button class="modal__close" type="button" data-modal-close aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__chapter" id="apply-chapter"></div>
+    <p class="form-status" id="apply-status" hidden></p>
+    <form class="form-grid" id="apply-form">
+      <input type="hidden" id="apply-chapter-id" name="chapter_id">
+      <input type="hidden" id="apply-chapter-name" name="chapter_name">
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="apply-student">Student name</label><input id="apply-student" name="student_name" required></div>
+        <div class="field"><label for="apply-grade">Grade level</label>
+          <select id="apply-grade" name="grade" required>
+            <option value="">Select</option>
+            <option>6th</option><option>7th</option><option>8th</option>
+            <option>9th</option><option>10th</option><option>11th</option><option>12th</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="apply-parent">Parent or guardian name</label><input id="apply-parent" name="parent_name" required></div>
+        <div class="field"><label for="apply-phone">Phone</label><input id="apply-phone" name="phone" type="tel" required></div>
+      </div>
+      <div class="field"><label for="apply-email">Email</label><input id="apply-email" name="email" type="email" required></div>
+      <div class="field"><label for="apply-school">School</label><input id="apply-school" name="school"></div>
+      <div class="field"><label for="apply-notes">Anything the chapter should know</label><textarea id="apply-notes" name="notes" rows="3"></textarea></div>
+      <p class="form-note">Submitting shares this information with the chapter Guide Right Chairman only. Every adult volunteer completes fraternity background screening and youth-protection training.</p>
+      <button class="btn btn--primary btn--block" type="submit">Submit application</button>
+    </form>
+  </div>
+</div>
+
+<!-- Contact director modal ------------------------------------------------->
+<div class="modal" id="modal-contact" data-open="false" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+  <div class="modal__scrim" data-modal-close></div>
+  <div class="modal__panel">
+    <div class="modal__head">
+      <div>
+        <h2 id="contact-title">Contact the program director</h2>
+        <p class="small muted" style="margin:0;">Routes to the chapter Guide Right Chairman.</p>
+      </div>
+      <button class="modal__close" type="button" data-modal-close aria-label="Close">&times;</button>
+    </div>
+    <div class="modal__chapter" id="contact-chapter"></div>
+    <p class="form-status" id="contact-status" hidden></p>
+    <form class="form-grid" id="contact-form">
+      <input type="hidden" id="contact-chapter-id" name="chapter_id">
+      <input type="hidden" id="contact-chapter-name" name="chapter_name">
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="contact-name">Your name</label><input id="contact-name" name="name" required></div>
+        <div class="field"><label for="contact-grade">Student grade level</label>
+          <select id="contact-grade" name="grade">
+            <option value="">Select</option>
+            <option>6th</option><option>7th</option><option>8th</option>
+            <option>9th</option><option>10th</option><option>11th</option><option>12th</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="contact-phone">Phone</label><input id="contact-phone" name="phone" type="tel"></div>
+        <div class="field"><label for="contact-email">Email</label><input id="contact-email" name="email" type="email" required></div>
+      </div>
+      <div class="field"><label for="contact-msg">Your question</label><textarea id="contact-msg" name="message" rows="4" required></textarea></div>
+      <button class="btn btn--primary btn--block" type="submit">Send message</button>
+    </form>
+  </div>
+</div>
+
+<!-- Start a League modal --------------------------------------------------->
+<div class="modal" id="modal-start" data-open="false" role="dialog" aria-modal="true" aria-labelledby="start-title">
+  <div class="modal__scrim" data-modal-close></div>
+  <div class="modal__panel">
+    <div class="modal__head">
+      <div>
+        <h2 id="start-title">Bring Kappa League to your district</h2>
+        <p class="small muted" style="margin:0;">The Commission reviews every request against nearby chapter capacity.</p>
+      </div>
+      <button class="modal__close" type="button" data-modal-close aria-label="Close">&times;</button>
+    </div>
+    <p class="form-status" id="start-status" hidden></p>
+    <form class="form-grid" id="start-form">
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="start-name">Your name</label><input id="start-name" name="name" required></div>
+        <div class="field"><label for="start-role">Your role</label>
+          <select id="start-role" name="role">
+            <option>Parent or guardian</option>
+            <option>Student</option>
+            <option>School or district staff</option>
+            <option>Community organization</option>
+            <option>Fraternity member</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="start-email">Email</label><input id="start-email" name="email" type="email" required></div>
+        <div class="field"><label for="start-zip">ZIP code</label><input id="start-zip" name="zip" inputmode="numeric" required></div>
+      </div>
+      <div class="field"><label for="start-detail">Schools, districts or community sites to serve</label><textarea id="start-detail" name="detail" rows="3"></textarea></div>
+      <button class="btn btn--primary btn--block" type="submit">Submit request</button>
+    </form>
+  </div>
+</div>
+
+<!-- Province director modal ------------------------------------------------>
+<div class="modal" id="modal-province" data-open="false" role="dialog" aria-modal="true" aria-labelledby="province-title">
+  <div class="modal__scrim" data-modal-close></div>
+  <div class="modal__panel">
+    <div class="modal__head">
+      <div>
+        <h2 id="province-title">Contact a Province Guide Right Director</h2>
+        <p class="small muted" style="margin:0;">Province directors know which chapters near you are chartering next.</p>
+      </div>
+      <button class="modal__close" type="button" data-modal-close aria-label="Close">&times;</button>
+    </div>
+    <p class="form-status" id="province-status" hidden></p>
+    <form class="form-grid" id="province-form">
+      <div class="field"><label for="province-select">Province</label>
+        <select id="province-select" name="province" required>
+          <option value="">Select your province</option>
+          <option>Eastern</option><option>Middle Eastern</option><option>Southern</option>
+          <option>Southeastern</option><option>East Central</option><option>Great Lakes</option>
+          <option>North Central</option><option>Northern</option><option>Southwestern</option>
+          <option>Western</option>
+        </select>
+      </div>
+      <div class="form-grid form-grid--2">
+        <div class="field"><label for="province-name">Your name</label><input id="province-name" name="name" required></div>
+        <div class="field"><label for="province-email">Email</label><input id="province-email" name="email" type="email" required></div>
+      </div>
+      <div class="field"><label for="province-msg">Your question</label><textarea id="province-msg" name="message" rows="4" required></textarea></div>
+      <p class="form-note">Province list is the standard fraternity province structure. Confirm current province names and routing addresses before launch.</p>
+      <button class="btn btn--primary btn--block" type="submit">Send message</button>
+    </form>
+  </div>
+</div>
+
+<section class="section section--surface">
+  <div class="shell">
+    <div class="center" style="margin-bottom:2rem;">
+      <h2>No program near you</h2>
+      <p class="lede measure">Districts without a chartered League are where the Commission looks first when planning new programs. Both paths below are read by real people.</p>
+    </div>
+    <div class="grid grid--2">
+      <article class="card">
+        <h3>Request a Kappa League in your district</h3>
+        <p>Tell the Commission which schools and community sites need a program. Requests are matched against nearby chapter capacity and province planning.</p>
+        <button class="btn btn--primary" type="button" data-modal-open="modal-start">Submit a request</button>
+      </article>
+      <article class="card">
+        <h3>Contact your Province Guide Right Director</h3>
+        <p>Province directors coordinate chapters across a multi-state region and know which programs are chartering next.</p>
+        <button class="btn btn--outline" type="button" data-modal-open="modal-province">Contact a director</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell measure">
+    <h2>What to expect after you apply</h2>
+    <p>A chapter officer contacts you within the chapter's stated response window to confirm orientation, enrollment forms and the meeting calendar. Kappa League operates on a school-year cycle, so most chapters enroll new Leaguers at the start of a term and hold a rolling interest list in between.</p>
+    <p class="notice"><strong>Build note.</strong> Response-time commitments, enrollment windows and any fee information must be confirmed by the Commission before this copy goes live.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__grid">
+      <div>
+        <a class="brand" href="index.html">
+          <span class="brand__mark" aria-hidden="true">GR</span>
+          <span class="brand__text">
+            <span class="brand__name">National Guide Right Commission</span>
+            <span class="brand__sub">Kappa Alpha Psi Fraternity, Inc.</span>
+          </span>
+        </a>
+        <p style="margin-top:1rem;max-width:34ch;color:#9CA3AF;font-size:.875rem;">
+          Guide Right is the community service and youth mentorship program of Kappa Alpha Psi Fraternity, Inc.
+          The Kappa Youth Leadership and Development League, known as Kappa League, is its flagship initiative for young men in grades 6 through 12.
+        </p>
+      </div>
+      <div>
+        <h3>Programs</h3>
+        <ul>
+          <li><a href="kappa-league.html">Kappa League</a></li>
+          <li><a href="seven-phases.html">The 7 Phases</a></li>
+          <li><a href="kamp-kappa.html">Kamp Kappa &amp; STEM</a></li>
+          <li><a href="locator.html">Find a Program</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Get Involved</h3>
+        <ul>
+          <li><a href="parents.html">Parents &amp; Students</a></li>
+          <li><a href="donate.html">Donors &amp; Sponsors</a></li>
+          <li><a href="chapters.html">Chapter Officers</a></li>
+          <li><a href="news.html">News &amp; Impact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Commission</h3>
+        <ul>
+          <li><a href="about.html">About Guide Right</a></li>
+          <li><a href="about.html#leadership">Leadership</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+          <li><a href="donate.html#transparency">501(c)(3) Information</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <span>&copy; <span data-year>2026</span> Kappa Alpha Psi Fraternity, Inc. All rights reserved.</span>
+      <span>Placeholder build. Replace legal entity details, privacy policy and youth-protection notices before launch.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a class="btn btn--primary btn--sm" href="locator.html">Find Kappa League</a>
+  <a class="btn btn--gold btn--sm" href="donate.html">Donate</a>
+</div>
+
+<script src="assets/js/site.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="assets/js/locator.js"></script>
+</body>
+</html>
