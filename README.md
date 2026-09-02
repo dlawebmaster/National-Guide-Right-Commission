@@ -60,10 +60,12 @@ Commission sign-off: founding dates, risk management language, the reporting
 calendar, fee and eligibility answers, 501(c)(3) entity details and allocation
 percentages. Grep for `Build note` and clear them one at a time.
 
-**Photography.** Every image is a labeled placeholder (`<figure class="photo">`)
-with the intended subject and pixel size in the caption. Replace each with a real
-`<img>` carrying descriptive alt text. The design was built for authentic chapter
-photography, not stock.
+**Photography.** The three hero-grid images are real. Every other image on the
+site is still a labeled placeholder
+(`<figure class="photo">`) with the intended subject and pixel size in the caption.
+Replace each with a real photo using the `photo_real()` helper in `build.py`,
+which handles the srcset, dimensions and lazy loading. The design was built for
+authentic chapter photography, not stock.
 
 ---
 
@@ -126,6 +128,40 @@ footer without a visible plate.
 | `guide-right-emblem.png` | 953×1024, 160 KB | Master. Not loaded by any page. Use it for print, social or future assets |
 | `favicon-32.png` | 32×32 | Browser tab |
 | `favicon-180.png` | 180×180 | iOS home screen |
+
+## Photographs
+
+All three hero-grid slots now hold real photographs.
+
+| File | Size | Used by |
+|---|---|---|
+| `kappa-league-temple-640.jpg` / `-960.jpg` | 640×423, 960×635 | Hero grid, large slot |
+| `mentorship-monthly-session-640.jpg` / `-1170.jpg` | 640×464, 1170×848 | Hero grid, community service tile |
+| `college-tour-800.jpg` / `-1600.jpg` | 800×600, 1600×1200 | Hero grid, college tour tile |
+| `college-tour-wide-1600.jpg` | 1600×1200 | Not used. Wider establishing crop of the same frame |
+
+**Crops.** The Temple frame and the Mansfield-Cedar Hill graphic are shown
+uncropped, at their own aspect ratios, passed through `photo_real(ratio=...)`.
+The monthly-session frame carries chapter branding in all four corners, and any
+crop toward 16:9 would have cut the seal, the Texas mark or the Guide Right logo
+off the edge. The college tour frame is the exception: its source was 7129×4935 and the
+tile renders about 176px wide, so a wide establishing crop reduced the Leaguers
+to specks. That one is pulled tight on the front rank, where the cardigans and
+faces still read at tile size, and the wider version is kept alongside it.
+
+**Delivery.** Two exports per photo wired through `srcset` with a `sizes` hint,
+so a phone downloads the small file and a retina desktop gets the large one. All
+carry explicit `width` and `height`. The large hero image is `eager` with
+`fetchpriority="high"` because it is above the fold; the two tiles are lazy.
+
+**Resolution ceiling.** The Temple photo tops out at 960px and the monthly-session
+graphic at 1170px. Both are large enough for their current slots at 2x, but neither has room
+to grow. If either is ever moved to a full-width band, source a higher-resolution
+original rather than upscaling.
+
+Alt text describes what the photograph shows rather than naming it. If you
+publish a photo of identifiable minors, confirm a signed media release is on file
+for every young man in the frame before it goes live.
 
 The 320px file is quantized to 128 colors, which cut it from 142 KB to 28 KB with
 no visible loss at display size. It serves both the 60px header and the 74px

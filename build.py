@@ -207,6 +207,31 @@ def page(filename, title, description, body, extra_head="", extra_scripts=""):
 # --------------------------------------------------------------------------- blocks
 
 
+def photo_real(base, alt, widths=(800, 1600), mod="",
+               sizes="(min-width: 940px) 22vw, 45vw", ratio=None, eager=False):
+    """A real photograph.
+
+    base    filename stem in assets/img/, with one JPEG per entry in widths
+    widths  exported widths, smallest first; the smallest is the src fallback
+    ratio   (w, h) to override the tile aspect. Use it when the frame should not
+            be cropped, for example a graphic with branding in its corners.
+    eager   skip lazy loading. Set it on anything above the fold.
+    """
+    srcset = ", ".join(f"assets/img/{base}-{w}.jpg {w}w" for w in widths)
+    small = widths[0]
+    style = f' style="aspect-ratio: {ratio[0]} / {ratio[1]};"' if ratio else ""
+    loading = "eager" if eager else "lazy"
+    priority = ' fetchpriority="high"' if eager else ""
+    big = widths[-1]
+    return f"""<figure class="photo photo--filled {mod}"{style}>
+      <img src="assets/img/{base}-{small}.jpg"
+           srcset="{srcset}"
+           sizes="{sizes}"
+           width="{big}" height="{{}}" loading="{loading}" decoding="async"{priority}
+           alt="{alt}">
+    </figure>""".replace("{}", str(round(big * (ratio[1] / ratio[0]) if ratio else big * 0.75)))
+
+
 def photo(label, note, mod=""):
     return f"""<figure class="photo {mod}">
       <figcaption class="photo__label">{label}<span>{note}</span></figcaption>
@@ -507,9 +532,15 @@ def build_index():
       <p class="small muted" style="margin-top:1.25rem;">Programs operate in chapters nationwide. Every adult volunteer completes background screening and youth-protection training.</p>
     </div>
     <div class="photo-grid">
-      {photo("Hero photograph", "Kappa Leaguers at a chapter leadership session. 1600&times;900, real chapter photography.", "photo--wide")}
-      {photo("Community service", "Leaguers on a service project. 800&times;600.")}
-      {photo("College tour", "Campus visit with mentors. 800&times;600.")}
+      {photo_real("kappa-league-temple",
+                  "A Kappa League cohort and their chapter advisors gathered outside the Temple University campus entrance during a college visit.",
+                  widths=(640, 960), ratio=(960, 635), eager=True,
+                  sizes="(min-width: 940px) 44vw, 92vw")}
+      {photo_real("mentorship-monthly-session",
+                  "Chapter mentors standing shoulder to shoulder with Kappa Leaguers, collection bags and grabbers in hand, at a monthly session service project.",
+                  widths=(640, 1170), ratio=(1170, 848))}
+      {photo_real("college-tour",
+                  "Kappa Leaguers in crimson and cream cardigans walking together across a college campus during a group visit.")}
     </div>
   </div>
 </section>
