@@ -23,6 +23,7 @@ assets/css/site.css   Entire design system. One file, tokenized at the top.
 assets/js/site.js     Mobile drawer, modal plumbing, footer year
 assets/js/locator.js  Locator search, filtering, distance math, map, modals
 assets/data/chapters.json   SAMPLE chapter records — replace before launch
+assets/img/                 Commission emblem and favicons (see section 4)
 
 build.py              Regenerates the ten HTML files from shared header/footer
 shots/                Verification screenshots from the build
@@ -112,7 +113,37 @@ user clicked.
 
 ---
 
-## 4. Design system
+## 4. Logo assets
+
+The Commission emblem replaces the placeholder "GR" box in both the header and
+the footer lockup. The supplied PNG was trimmed to its bounding box; its
+background was already transparent, so it sits correctly on white and on the dark
+footer without a visible plate.
+
+| File | Size | Used by |
+|---|---|---|
+| `guide-right-emblem-320.png` | 298×320, 28 KB | Header (60px tall) and footer (74px tall) |
+| `guide-right-emblem.png` | 953×1024, 160 KB | Master. Not loaded by any page. Use it for print, social or future assets |
+| `favicon-32.png` | 32×32 | Browser tab |
+| `favicon-180.png` | 180×180 | iOS home screen |
+
+The 320px file is quantized to 128 colors, which cut it from 142 KB to 28 KB with
+no visible loss at display size. It serves both the 60px header and the 74px
+footer, so it stays crisp on 2x and 3x displays from a single request. Both
+`<img>` tags carry explicit `width` and `height` so the header reserves its space
+before the image arrives and nothing shifts on load.
+
+Alt text is intentionally empty (`alt=""`) on both. The emblem sits inside a link
+whose adjacent text already reads "National Guide Right Commission", so a screen
+reader announcing the image as well would repeat the name twice.
+
+If you replace the emblem with a different file, keep the transparent background
+and re-run the size exports. A logo with a baked-in white background will show as
+a white rectangle against the footer.
+
+---
+
+## 5. Design system
 
 Tokens live at the top of `assets/css/site.css`.
 
@@ -134,7 +165,7 @@ gold-toned text sits on a light background.
 
 ---
 
-## 5. Verification performed
+## 6. Verification performed
 
 - **Contrast:** 22 foreground/background pairs computed against WCAG 2.1. Lowest
   ratio is 4.83:1 (faint neutral on white). Everything else clears 5:1, most clear 7:1.
@@ -147,6 +178,8 @@ gold-toned text sits on a light background.
   in a headless browser.
 - **Links and anchors:** every internal href resolves to a file that exists; every
   in-page anchor resolves to an element that exists.
+- **Logo:** header and footer lockups checked at 390, 1120 and 1440 px. Header
+  sits on a single row at every width above the mobile breakpoint.
 - **JSON:** schema validated, unique IDs, no missing fields.
 
 Screenshots from these runs are in `shots/`. The map area renders empty in them
@@ -155,7 +188,7 @@ tiles load normally from a browser with internet access.
 
 ---
 
-## 6. Deploying
+## 7. Deploying
 
 Any static host works. For GitHub Pages, push the folder contents to the branch
 you serve from; no Jekyll configuration is needed. Two notes:
@@ -163,13 +196,14 @@ you serve from; no Jekyll configuration is needed. Two notes:
 - `chapters.json` is loaded with `fetch`, which browsers block on `file://`. Open
   the site through a web server, not by double-clicking the HTML. Locally:
   `python3 -m http.server 8000`.
-- Google Fonts and cdnjs are the only external requests. If your hosting policy
+- Google Fonts and cdnjs are the only external requests. The emblem and favicons
+  are local files. If your hosting policy
   forbids third-party requests, self-host both. The font stack already degrades
   to Georgia and system sans if the fonts never arrive.
 
 ---
 
-## 7. Notes on the design brief
+## 8. Notes on the design brief
 
 The spec called for TailwindCSS. This build uses hand-authored CSS instead,
 because a multi-page static site with no build step would otherwise need the
