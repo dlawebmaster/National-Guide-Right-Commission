@@ -258,6 +258,99 @@ def pagehead(title, lede, crumb, anchors=None):
 """
 
 
+GUIDE_RIGHT_OBJECTIVES = [
+    "Create the next generation of leaders through leadership development",
+    "Prepare students for college",
+    "Mentor students to college graduation",
+    "Positively impact youth through mentoring and training",
+    "Prepare youth for academic success in middle school, high school and college",
+]
+
+GUIDE_RIGHT_IMPACT = [
+    ("98%", "of Guide Right students graduate high school"),
+    ("77%", "graduate college within six years"),
+    ("500K+", "young lives impacted"),
+    ("266", "chapters"),
+    ("11,100+", "students"),
+]
+
+
+def guide_right_section():
+    objectives = "".join(f"<li>{o}</li>" for o in GUIDE_RIGHT_OBJECTIVES)
+    impact = "".join(
+        f'<div class="impact__item"><p class="impact__fig">{fig}</p><p class="impact__lbl">{lbl}</p></div>'
+        for fig, lbl in GUIDE_RIGHT_IMPACT
+    )
+    return f"""
+<section class="section" id="guide-right">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow">Our National Service Initiative</p>
+    <h2>Guide Right</h2>
+
+    <div class="split">
+      <div>
+        <p class="lede">Guide Right is our National Service Initiative and includes all our youth-oriented programs. The flagship initiative of the Guide Right Service Program is the Kappa Leadership Development League, known as Kappa League.</p>
+        <p>Guide Right is a program of the educational and occupational guidance of youth, primarily inspirational and informative in character. The purpose of the Guide Right Service Program is to place the training, experience and interest of successful men at the disposal of youth.</p>
+        <p>We focus on developing leadership, creating an achievement mindset, and mentoring. We have mentored over 500,000 young people.</p>
+        <p class="statement">We are the oldest, most successful mentoring program for young people of color.</p>
+      </div>
+
+      <div>
+        <h3>Guide Right objectives</h3>
+        <ol class="objectives-grid" style="grid-template-columns:1fr;">{objectives}</ol>
+        <div class="btn-row" style="margin-top:1.75rem;">
+          <a class="btn btn--ghost btn--sm" href="history.html">Read the Guide Right history &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2.5rem;margin-bottom:0;">Our impact</h3>
+    <div class="impact">{impact}</div>
+    <p class="impact__note">Figures supplied by the National Guide Right Commission.</p>
+
+    <p class="notice" style="margin-top:1.75rem;">
+      <strong>Build note.</strong> These figures conflict with the hero stripe above, which still carries the placeholder values <em>10,000+ mentees</em> and a <em>100% graduation rate</em>. Two different numbers for the same measure cannot both ship. Align the stripe with the figures in this section, or remove the stripe.
+    </p>
+  </div>
+</section>
+"""
+
+
+def video_section():
+    return """
+<section class="section section--surface" id="watch">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow">Watch</p>
+    <h2>Ensure No Graduate is Left Behind</h2>
+    <p class="lede measure">The Kappa League to Kappa Kollege handoff, and what it takes to carry a young man past the diploma.</p>
+
+    <div class="video__wrap" style="margin-top:2rem;">
+      <div class="video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/_AXTGy5hg78"
+          title="Ensure No Graduate is Left Behind: Kappa League to Kappa Kollege handoff"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+
+      <div class="video__meta">
+        <span class="kicker">About this video</span>
+        <p>Guide Right does not end at high school graduation. The handoff from Kappa League into Kappa Kollege is how the Commission keeps a mentor in a young man's life through the years when most programs let go.</p>
+        <div class="btn-row">
+          <a class="btn btn--outline btn--sm" href="https://www.youtube.com/watch?v=_AXTGy5hg78" target="_blank" rel="noopener">Watch on YouTube</a>
+        </div>
+        <p class="notice" style="margin-top:1.25rem;">
+          <strong>Build note.</strong> The video title is taken from the link you supplied. Confirm the publishing channel and add a caption or transcript link so the content is available to visitors who cannot use the player.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+"""
+
+
 LEGACY_TEASER = [
     ("1922", "The Idea"),
     ("1923", "National Adoption"),
@@ -613,6 +706,10 @@ def build_index():
     <p class="notice"><strong>Build note.</strong> Figures in the stripe above carry a <span class="verify">verify</span> marker because they are unconfirmed. Replace each with a documented number sourced from Commission reporting, or remove the tile. Search the codebase for <code>class="verify"</code> to find every instance.</p>
   </div>
 </section>
+
+{guide_right_section()}
+
+{video_section()}
 
 {legacy_section()}
 
