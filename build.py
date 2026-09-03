@@ -17,6 +17,7 @@ SITE_SUB = "Kappa Alpha Psi Fraternity, Inc."
 
 NAV = [
     ("about.html", "About Us"),
+    ("history.html", "History"),
     ("kappa-league.html", "Kappa League"),
     ("seven-phases.html", "7 Phases"),
     ("kamp-kappa.html", "Kamp Kappa &amp; STEM"),
@@ -167,6 +168,7 @@ FOOTER = """
         <h3>Commission</h3>
         <ul>
           <li><a href="about.html">About Guide Right</a></li>
+          <li><a href="history.html">Guide Right History</a></li>
           <li><a href="about.html#leadership">Leadership</a></li>
           <li><a href="about.html#contact">Contact</a></li>
           <li><a href="donate.html#transparency">501(c)(3) Information</a></li>
@@ -251,6 +253,58 @@ def pagehead(title, lede, crumb, anchors=None):
     <h1>{title}</h1>
     <p class="lede measure">{lede}</p>
     {a}
+  </div>
+</section>
+"""
+
+
+LEGACY_TEASER = [
+    ("1922", "The Idea"),
+    ("1923", "National Adoption"),
+    ("1928", "Early Vision"),
+    ("1936", "Year-Round Development"),
+    ("1952", "Expanded Program"),
+    ("Today", "The Legacy Continues"),
+]
+
+
+def legacy_section():
+    nodes = "".join(
+        f'''<li class="teaser__node">
+            <p class="teaser__year">{yr}</p>
+            <p class="teaser__label">{label}</p>
+          </li>'''
+        for yr, label in LEGACY_TEASER
+    )
+    return f"""
+<section class="section archival" id="legacy">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow">Our Legacy</p>
+    <h2>More Than a Century of Guide Right</h2>
+    <p class="kicker" style="color:var(--sepia-muted);margin-bottom:1.25rem;">A National Movement Since 1922</p>
+
+    <div class="legacy__grid">
+      <div>
+        <p>Guide Right began in St. Louis, Missouri, in 1922 from a vision to provide young men with guidance, mentorship, vocational direction, and opportunities to prepare for lives of usefulness and service.</p>
+        <p>What began as an initiative of the St. Louis Alumni Chapter developed into a national movement of Kappa Alpha Psi Fraternity, Inc. Over the decades, Guide Right expanded from its early emphasis on vocational guidance into a year-round youth development program centered on mentorship, education, leadership, career preparation, service, and personal development.</p>
+        <p>For more than a century, the methods have evolved while the commitment to guiding young men toward productive futures has endured.</p>
+        <div class="btn-row" style="margin-top:1.75rem;">
+          <a class="btn btn--primary" href="history.html">Explore our history &rarr;</a>
+        </div>
+      </div>
+
+      <div class="legacy__quote">
+        <blockquote>&ldquo;How shall I invest my life?&rdquo;</blockquote>
+        <cite>Recorded in the 1952 historical account</cite>
+        <p>The question early Guide Right leaders set out to help young men answer. More than a century later, it is still the work.</p>
+      </div>
+    </div>
+
+    <div class="teaser">
+      <h3 class="visually-hidden">Guide Right milestones</h3>
+      <ol class="teaser__track">{nodes}</ol>
+      <p class="teaser__hint">Scroll for more milestones.</p>
+    </div>
   </div>
 </section>
 """
@@ -559,6 +613,8 @@ def build_index():
     <p class="notice"><strong>Build note.</strong> Figures in the stripe above carry a <span class="verify">verify</span> marker because they are unconfirmed. Replace each with a documented number sourced from Commission reporting, or remove the tile. Search the codebase for <code>class="verify"</code> to find every instance.</p>
   </div>
 </section>
+
+{legacy_section()}
 
 <section class="section">
   <div class="shell">
@@ -1321,6 +1377,413 @@ def build_chapters():
                 body)
 
 
+# --------------------------------------------------------------- history page
+
+TIMELINE = [
+    ("tl-1922", "1922", "The Idea Is Born"),
+    ("tl-1923", "1923", "From Local Idea to National Movement"),
+    ("tl-1928", "1928", "The Early Vision"),
+    ("tl-1936a", "1936", "An Organized Model of Guidance"),
+    ("tl-1936b", "1936", "From a Week to a Year-Round Mission"),
+    ("tl-1940", "1940&ndash;1944", "Continued Development"),
+    ("tl-1945", "1945&ndash;1952", "Expanding the National Structure"),
+    ("tl-1952", "1952", "The Program Defined"),
+]
+
+
+def source_modal(year, title, subtitle):
+    """Primary-source panel. The transcription slot stays empty until the real
+    handbook text is supplied. Never fill it with reconstructed language."""
+    return f"""
+<div class="modal" id="modal-{year}" data-open="false" role="dialog" aria-modal="true" aria-labelledby="src-{year}-title">
+  <div class="modal__scrim" data-modal-close></div>
+  <div class="modal__panel modal__panel--wide">
+    <div class="modal__head">
+      <div>
+        <p class="panel__label">Primary source &mdash; {year}</p>
+        <h2 id="src-{year}-title">{title}</h2>
+        <p class="small muted" style="margin:0;">{subtitle}</p>
+      </div>
+      <button class="modal__close" type="button" data-modal-close aria-label="Close">&times;</button>
+    </div>
+
+    <div class="modal__grid">
+      <figure class="scan" aria-label="Placeholder for a scan of the {year} Kappa Alpha Psi Fraternity handbook page">
+        <figcaption><strong>{year} handbook page</strong>
+        <p>Drop the scan at <code>assets/img/handbook-{year}.jpg</code> and replace this figure. Alt text should describe the document, not repeat the transcription.</p></figcaption>
+      </figure>
+
+      <div>
+        <div class="transcript">
+          <h3>Full transcription</h3>
+          <div class="transcript__pending">
+            <strong>Transcription not yet supplied.</strong>
+            The verbatim text of the {year} handbook account has not been provided to this build. Paste it here exactly as printed, preserving original spelling, punctuation and terminology. Nothing has been reconstructed or paraphrased in its place.
+          </div>
+        </div>
+        <p class="small muted" style="margin-top:1rem;">Quotations shown on this page are reproduced as supplied by the Commission. The transcription panel is the place for the complete passage, so visitors never have to read text embedded in an image.</p>
+      </div>
+    </div>
+  </div>
+</div>
+"""
+
+
+def build_history():
+    rail = "".join(
+        f'<li><a href="#{i}">{yr} &middot; {t}</a></li>' for i, yr, t in TIMELINE
+    )
+
+    body = f"""
+<section class="archival archive-hero">
+  <div class="shell">
+    <p class="crumbs"><a href="index.html">Home</a> &rsaquo; Guide Right History</p>
+    <p class="eyebrow">Established 1922</p>
+    <h1>More Than a Century of Guiding Young Men</h1>
+    <div class="measure">
+      <p class="lede">Guide Right represents more than a program. It is a continuing commitment to the development of young men that began in St. Louis, Missouri, in 1922.</p>
+      <p>Historical accounts preserved in Kappa Alpha Psi Fraternity handbooks from 1928, 1936, and 1952 provide a unique record of how the movement began, how its methods developed, and how its mission expanded over time.</p>
+    </div>
+    <nav class="anchor-nav" aria-label="On this page">
+      <a href="#question">The founding question</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#then-now">Then and today</a>
+      <a href="#archives">From the archives</a>
+      <a href="#sources">About these sources</a>
+    </nav>
+  </div>
+</section>
+
+<!-- The question ---------------------------------------------------------->
+<section class="section question" id="question">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow" style="color:var(--gold);">The Question That Started a Movement</p>
+    <blockquote class="question__quote">&ldquo;How shall I invest my life?&rdquo;</blockquote>
+    <p class="question__cite">Recorded in the 1952 historical account</p>
+    <div class="measure" style="margin-top:2rem;">
+      <p>Early Guide Right leaders recognized that many young men were completing high school without clear vocational direction, and that they often lacked access to experienced men who could provide guidance.</p>
+      <p>That question is the reason the movement exists. Everything that follows on this page is an account of how Kappa Alpha Psi organized itself to help young men answer it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -------------------------------------------------------------->
+<section class="section archival" id="timeline">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow">The Record</p>
+    <h2>A Timeline of the Guide Right Movement</h2>
+    <p class="lede measure">Drawn from the 1928, 1936, and 1952 Kappa Alpha Psi Fraternity handbooks. Where the accounts differ, the source is named.</p>
+
+    <div class="tl-wrap" style="margin-top:2.5rem;">
+      <nav class="tl-rail" id="tl-rail" aria-label="Timeline entries">
+        <ol>{rail}</ol>
+      </nav>
+
+      <ol class="tl">
+
+        <li class="tl__item" id="tl-1922">
+          <h3 class="tl__year">1922</h3>
+          <p class="tl__title">The Idea Is Born</p>
+          <div class="tl__body">
+            <p>Guide Right originated in St. Louis, Missouri, through the St. Louis Alumni Chapter of Kappa Alpha Psi Fraternity, Inc.</p>
+            <p>The historical sources identify Leon W. Stewart/Steward, Ben H. Mosby, and Dr. J. Jerome Peters as important figures in the early development and national advancement of Guide Right.</p>
+            <p class="notice" style="background:rgba(255,255,255,.7);border-color:var(--cream-line);border-left-color:var(--gold-deep);color:var(--sepia-muted);">
+              <strong>A note on spelling.</strong> The historical documents vary between &ldquo;Stewart&rdquo; and &ldquo;Steward.&rdquo; Both forms appear in the record. Direct quotations preserve the spelling used by their original source rather than settling on one form.
+            </p>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1923">
+          <h3 class="tl__year">1923</h3>
+          <p class="tl__title">From Local Idea to National Movement</p>
+          <div class="tl__body">
+            <p>Dr. J. Jerome Peters presented the Guide Right concept and its supporting information at the Grand Chapter meeting in Louisville, Kentucky.</p>
+            <p>According to the 1936 historical account, the Grand Chapter adopted Guide Right as a national movement and established a commission to carry it forward.</p>
+            <div class="stack-note">
+              <p class="stack-note__tier">Local vision</p>
+              <p class="stack-note__name">St. Louis Alumni Chapter</p>
+              <p class="stack-note__arrow" aria-hidden="true">&darr;</p>
+              <p class="stack-note__tier">National movement</p>
+              <p class="stack-note__name">Kappa Alpha Psi</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1928">
+          <h3 class="tl__year">1928</h3>
+          <p class="tl__title">The Early Vision</p>
+          <div class="tl__body">
+            <p>This early account described Guide Right primarily as a vocational movement, designed to help high school boys identify their place in the occupational world and become useful members of their communities and of the nation.</p>
+            <div class="panel">
+              <p class="panel__label">Primary source &mdash; 1928</p>
+              <p class="panel__source">Kappa Alpha Psi Fraternity Handbook</p>
+              <blockquote>
+                &ldquo;The purpose of the movement is a vocational one.&rdquo;
+                <cite>1928 handbook</cite>
+              </blockquote>
+              <ul class="keywords">
+                <li>Vocational guidance</li>
+                <li>Self-analysis</li>
+                <li>Mentorship</li>
+                <li>Education</li>
+                <li>Citizenship</li>
+                <li>Community usefulness</li>
+              </ul>
+              <div class="btn-row" style="margin-top:1.25rem;">
+                <button class="btn btn--ghost btn--sm" type="button" data-modal-open="modal-1928">View 1928 primary source</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1936a">
+          <h3 class="tl__year">1936</h3>
+          <p class="tl__title">An Organized Model of Guidance</p>
+          <div class="tl__body">
+            <p>The 1936 account shows an increasingly structured approach. It describes local committees identifying students, recruiting community professionals, conducting vocational conferences, providing individual interviews, maintaining self-discovery information, and continuing assistance when needed.</p>
+            <div class="panel">
+              <p class="panel__label">Primary source &mdash; 1936</p>
+              <p class="panel__source">Kappa Alpha Psi Fraternity Handbook</p>
+              <blockquote>
+                &ldquo;Help him choose his course, his college or placement&hellip;&rdquo;
+                <cite>1936 handbook</cite>
+              </blockquote>
+              <ol class="flow">
+                <li>Identify young men</li>
+                <li>Discover interests</li>
+                <li>Connect with community mentors</li>
+                <li>Explore vocations</li>
+                <li>Provide individual counsel</li>
+                <li>Assist with education and employment</li>
+                <li>Follow up</li>
+              </ol>
+              <div class="btn-row" style="margin-top:1.25rem;">
+                <button class="btn btn--ghost btn--sm" type="button" data-modal-open="modal-1936">View 1936 primary source</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1936b">
+          <h3 class="tl__year">1936</h3>
+          <p class="tl__title">From a Week to a Year-Round Mission</p>
+          <div class="tl__body">
+            <p>The later handbook account describes Guide Right moving beyond a single annual observance. The movement was placed on a year-round basis, while Guide Right Week remained a concentrated observance of the larger program.</p>
+            <ol class="flow flow--pair">
+              <li>Guide Right Week</li>
+              <li>365 days of guidance</li>
+              <li>Year-round youth development</li>
+            </ol>
+            <p class="notice" style="margin-top:1.25rem;background:rgba(255,255,255,.7);border-color:var(--cream-line);border-left-color:var(--gold-deep);color:var(--sepia-muted);">
+              <strong>Build note.</strong> The project brief attributes the year-round shift to &ldquo;the later historical account&rdquo; without naming the year. Confirm whether this comes from the 1936 or the 1952 handbook and label the entry accordingly before publication.
+            </p>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1940">
+          <h3 class="tl__year">1940&ndash;1944</h3>
+          <p class="tl__title">Continued Development</p>
+          <div class="tl__body">
+            <p>The 1952 account records a succession of leaders and the emphases each brought to the program.</p>
+            <ul class="roster">
+              <li>
+                <span class="roster__yr">1940&ndash;1941</span>
+                <p>R. J. Reynolds led further program development, including inspirational materials, vocational survey efforts, Guide Right breakfasts, and student employment efforts.</p>
+              </li>
+              <li>
+                <span class="roster__yr">1942</span>
+                <p>C. Rodger Wilson emphasized community needs, conferences, symposia, and speakers.</p>
+              </li>
+              <li>
+                <span class="roster__yr">1943</span>
+                <p>G. Smith Hawkins emphasized early contacts and guidance in the home.</p>
+              </li>
+              <li>
+                <span class="roster__yr">1944</span>
+                <p>James E. Anderson emphasized the importance and objectives of Guide Right through a published bulletin.</p>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1945">
+          <h3 class="tl__year">1945&ndash;1952</h3>
+          <p class="tl__title">Expanding the National Structure</p>
+          <div class="tl__body">
+            <p>Under Elbert W. Strothers, the movement expanded its objectives and developed full-time guidance programs, clinics, supervised year-round projects, Guide Right workbooks, self-analysis materials, counselee history outlines, and Provincial Area Guide Right Directors.</p>
+            <div class="stack-note">
+              <p class="stack-note__tier">National program</p>
+              <p class="stack-note__arrow" aria-hidden="true">&updownarrow;</p>
+              <p class="stack-note__tier">Provincial leadership</p>
+              <p class="stack-note__arrow" aria-hidden="true">&updownarrow;</p>
+              <p class="stack-note__tier">Local chapters</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="tl__item" id="tl-1952">
+          <h3 class="tl__year">1952</h3>
+          <p class="tl__title">The Program Defined</p>
+          <div class="tl__body">
+            <p>The 1952 handbook offers the most extensive historical snapshot of the program, setting out its purpose and objectives in full.</p>
+            <div class="panel">
+              <p class="panel__label">Primary source &mdash; 1952</p>
+              <p class="panel__source">Kappa Alpha Psi Fraternity Handbook</p>
+              <h4 style="margin-bottom:.35rem;">Historical 1952 objectives</h4>
+              <p class="small" style="color:var(--sepia-muted);margin-bottom:.5rem;">These are the objectives as documented in 1952. They are presented as a historical record, not as the current objectives of the Commission.</p>
+              <ol class="objectives">
+                <li>Help youth select educational courses leading toward appropriate vocations.</li>
+                <li>Encourage cooperative attitudes in the home and community.</li>
+                <li>Assist students during training, employment entry, and advancement.</li>
+                <li>Help boys facing serious emotional and social difficulties.</li>
+                <li>Assist parents in helping their children.</li>
+                <li>Provide constructive experiences and activities for less fortunate youth.</li>
+                <li>Provide fellowship and wholesome recreation through organized groups and clubs.</li>
+              </ol>
+              <div class="btn-row" style="margin-top:1.25rem;">
+                <button class="btn btn--ghost btn--sm" type="button" data-modal-open="modal-1952">View 1952 primary source</button>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- Then and today -------------------------------------------------------->
+<section class="section" id="then-now">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow">From Then to Today</p>
+    <h2>The Mission Endures</h2>
+    <p class="lede measure">The methods have evolved. The commitment remains.</p>
+    <p class="measure" style="margin-top:1.25rem;">Across generations, many of the themes found in Guide Right&rsquo;s earliest documents remain visible in its continuing commitment to youth development.</p>
+
+    <div class="compare">
+      <div class="compare__col">
+        <p class="compare__head">Historical Guide Right</p>
+        <ul>
+          <li>Vocational guidance</li>
+          <li>Self-analysis</li>
+          <li>Educational planning</li>
+          <li>Community mentorship</li>
+          <li>Employment assistance</li>
+          <li>Scholarship support</li>
+          <li>Constructive recreation</li>
+          <li>Citizenship</li>
+        </ul>
+      </div>
+      <div class="compare__col compare__col--now">
+        <p class="compare__head">Modern Guide Right</p>
+        <ul>
+          <li>Phase I &middot; Self-Identity &amp; Purpose</li>
+          <li>Phase II &middot; Training &amp; Academic Preparation</li>
+          <li>Phase III &middot; Competition &amp; Preparedness</li>
+          <li>Phase IV &middot; Social &amp; Cultural Awareness</li>
+          <li>Phase V &middot; Health &amp; Wellness Education</li>
+          <li>Phase VI &middot; Economic Empowerment</li>
+          <li>Phase VII &middot; College &amp; Career Readiness</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted" style="margin-top:1.25rem;max-width:70ch;">The two columns are placed side by side as themes, not as a mapping. No modern phase is presented here as the direct successor of a specific historical objective, because the sources do not document such a correspondence.</p>
+  </div>
+</section>
+
+<!-- Enduring question ----------------------------------------------------->
+<section class="section enduring">
+  <div class="shell">
+    <div class="enduring__grid">
+      <div>
+        <p class="enduring__mark">1922</p>
+        <blockquote class="enduring__quote">&ldquo;How shall I invest my life?&rdquo;</blockquote>
+      </div>
+      <div>
+        <p class="enduring__mark">Today</p>
+        <p class="lede" style="color:#F5E6E5;">More than a century later, Guide Right continues helping young men explore that question through mentorship, education, leadership, service, career preparation, and personal development.</p>
+      </div>
+    </div>
+    <p class="enduring__close">The methods have evolved.<br>The responsibility endures.</p>
+    <div class="btn-row">
+      <a class="btn btn--gold" href="seven-phases.html">Discover Guide Right today &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- Archives -------------------------------------------------------------->
+<section class="section archival" id="archives">
+  <div class="shell">
+    <p class="eyebrow--plain eyebrow">From the Archives</p>
+    <h2>The Handbooks</h2>
+    <p class="lede measure">Three Kappa Alpha Psi Fraternity handbooks carry the documentary record of Guide Right&rsquo;s first three decades.</p>
+
+    <div class="archive-grid">
+      <article class="archive-card">
+        <p class="archive-card__year">1928</p>
+        <h3 class="archive-card__title">The Guide Right Movement</h3>
+        <p class="archive-card__sub">Kappa Alpha Psi Fraternity Handbook</p>
+        <span class="archive-card__flag">Primary source</span>
+        <div class="archive-card__actions">
+          <button class="btn btn--primary btn--sm" type="button" data-modal-open="modal-1928">View original</button>
+          <button class="btn btn--outline btn--sm" type="button" data-modal-open="modal-1928">Read transcription</button>
+        </div>
+      </article>
+
+      <article class="archive-card">
+        <p class="archive-card__year">1936</p>
+        <h3 class="archive-card__title">The Guide Right Movement</h3>
+        <p class="archive-card__sub">Kappa Alpha Psi Fraternity Handbook</p>
+        <span class="archive-card__flag">Primary source</span>
+        <div class="archive-card__actions">
+          <button class="btn btn--primary btn--sm" type="button" data-modal-open="modal-1936">View original</button>
+          <button class="btn btn--outline btn--sm" type="button" data-modal-open="modal-1936">Read transcription</button>
+        </div>
+      </article>
+
+      <article class="archive-card">
+        <p class="archive-card__year">1952</p>
+        <h3 class="archive-card__title">The Program Defined</h3>
+        <p class="archive-card__sub">Its evolution and development &middot; Purpose and objectives<br>Kappa Alpha Psi Fraternity Handbook</p>
+        <span class="archive-card__flag">Primary source</span>
+        <div class="archive-card__actions">
+          <button class="btn btn--primary btn--sm" type="button" data-modal-open="modal-1952">View original</button>
+          <button class="btn btn--outline btn--sm" type="button" data-modal-open="modal-1952">Read transcription</button>
+        </div>
+      </article>
+    </div>
+
+    <p class="notice" style="margin-top:2rem;background:rgba(255,255,255,.7);border-color:var(--cream-line);border-left-color:var(--gold-deep);color:var(--sepia-muted);">
+      <strong>Build note.</strong> The three panels open with empty transcription slots and placeholder scan frames on purpose. Supply the handbook scans and the verbatim transcriptions; nothing has been reconstructed to fill the gap.
+    </p>
+  </div>
+</section>
+
+<!-- Source note ----------------------------------------------------------->
+<section class="section--tight archival" id="sources" style="border-top:0;">
+  <div class="shell">
+    <div class="source-note measure">
+      <h2>About These Sources</h2>
+      <p>The history presented here draws upon Kappa Alpha Psi Fraternity handbooks published in 1928, 1936, and 1952. These primary historical documents were produced at different points in Guide Right&rsquo;s development and occasionally vary in detail, terminology, spelling, and emphasis. Historical quotations and source material are presented within their original context.</p>
+      <p>Where the accounts differ, this page names the source rather than reconciling them into a single version.</p>
+    </div>
+  </div>
+</section>
+
+{source_modal("1928", "The Guide Right Movement", "Kappa Alpha Psi Fraternity Handbook")}
+{source_modal("1936", "The Guide Right Movement", "Kappa Alpha Psi Fraternity Handbook")}
+{source_modal("1952", "The Program Defined", "Kappa Alpha Psi Fraternity Handbook")}
+"""
+
+    return page(
+        "history.html",
+        "History of Guide Right",
+        "Explore the history of the Guide Right movement from its beginnings in St. Louis in 1922 through more than a century of mentorship, vocational guidance, leadership, education, and youth development.",
+        body,
+        extra_scripts='<script src="assets/js/history.js"></script>\n',
+    )
+
+
 # --------------------------------------------------------------------------- run
 
 def main():
@@ -1328,6 +1791,7 @@ def main():
         build_index(),
         build_locator(),
         build_about(),
+        build_history(),
         build_kappa_league(),
         build_phases(),
         build_kamp(),

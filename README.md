@@ -11,6 +11,7 @@ A multi-page static site. No build toolchain, no framework, no npm install. Open
 index.html            Homepage (hero, trust stripe, 7 Phases, locator, audience blocks)
 locator.html          Full-page Kappa League program locator
 about.html            Commission mission, structure, leadership, youth protection
+history.html          Guide Right history: timeline, primary sources, archives
 kappa-league.html     Program overview, grade bands, program year, mentors
 seven-phases.html     Full curriculum detail, phase by phase
 kamp-kappa.html       Summer camp, STEM programming, travel grants
@@ -22,10 +23,11 @@ chapters.html         Officer portal, certification, compliance, reporting
 assets/css/site.css   Entire design system. One file, tokenized at the top.
 assets/js/site.js     Mobile drawer, modal plumbing, footer year
 assets/js/locator.js  Locator search, filtering, distance math, map, modals
+assets/js/history.js  Sticky year rail on the history page
 assets/data/chapters.json   SAMPLE chapter records — replace before launch
 assets/img/                 Commission emblem and favicons (see section 4)
 
-build.py              Regenerates the ten HTML files from shared header/footer
+build.py              Regenerates the eleven HTML files from shared header/footer
 shots/                Verification screenshots from the build
 ```
 
@@ -55,10 +57,10 @@ windows and contact routing are invented for layout testing. The locator shows a
 gold "Sample data" banner until you remove it from `build.py`. Keep the same JSON
 shape and the locator needs no code changes; `meta.field_notes` documents every field.
 
-**Build notes.** Eighteen `<p class="notice">` blocks flag copy that needs
+**Build notes.** Twenty `<p class="notice">` blocks flag copy that needs
 Commission sign-off: founding dates, risk management language, the reporting
-calendar, fee and eligibility answers, 501(c)(3) entity details and allocation
-percentages. Grep for `Build note` and clear them one at a time.
+calendar, fee and eligibility answers, 501(c)(3) entity details, allocation
+percentages, and the unresolved year-round attribution on the history page. Grep for `Build note` and clear them one at a time.
 
 **Photography.** The three hero-grid images are real. Every other image on the
 site is still a labeled placeholder
@@ -179,7 +181,66 @@ a white rectangle against the footer.
 
 ---
 
-## 5. Design system
+## 5. Guide Right history
+
+`history.html` and the "Our Legacy" section on the homepage. The homepage
+introduces the history in three paragraphs, a sourced pull quote and a six-node
+timeline teaser, then hands off to the history page for the full record.
+
+### What the sources actually support
+
+Every historical claim on these pages traces to the material supplied in the
+project brief, drawn from the 1928, 1936 and 1952 Kappa Alpha Psi Fraternity
+handbooks. Nothing was researched independently, inferred, or filled in.
+Specifically:
+
+- **No transcriptions were written.** The three primary-source panels open with
+  an explicit "transcription not yet supplied" notice. Paste the verbatim
+  handbook text into each, preserving original spelling, punctuation and
+  terminology. Do not let anyone paraphrase into these slots.
+- **No scans were faked.** Each panel carries a placeholder frame naming the file
+  path to drop the real scan into (`assets/img/handbook-1928.jpg` and so on).
+- **The Stewart/Steward variance is surfaced, not resolved.** The 1922 entry
+  states plainly that the documents differ and that quotations keep their own
+  source's spelling.
+- **One attribution is unresolved.** The brief attributes the shift to year-round
+  operation to "the later historical account" without naming a year. That entry
+  carries a build note asking which handbook it comes from. Resolve it before
+  publishing.
+- **The 1952 objectives are labeled historical.** They appear under the heading
+  "Historical 1952 objectives" with a line stating they are a record rather than
+  the Commission's current objectives.
+- **The then-and-now comparison claims no lineage.** The two columns sit side by
+  side as themes, with a note stating that no modern phase is presented as the
+  successor of a specific historical objective, because the sources do not
+  document that.
+
+### Design
+
+The historical material uses a scoped archival treatment: a cream ground
+(`--cream`) with two very low-contrast gradients standing in for aged paper, warm
+near-black text, oversized crimson years, and Playfair for quotations against
+Inter for explanation. It is applied only to `.archival` sections and the history
+page. The rest of the site is untouched. No vintage textures, sepia filters or
+period pastiche were applied globally.
+
+The timeline is a semantic `<ol>` with one `<li>` per entry. On desktop a sticky
+rail tracks which entry is in view via IntersectionObserver and marks it with
+`aria-current`; the page is complete and readable with that script disabled. On
+mobile the rail is hidden and the timeline collapses to a single chronological
+column.
+
+### Navigation change
+
+Adding History made seven items in the header. The horizontal nav now needs
+1240px; below that the drawer carries the full menu, including History. That
+breakpoint moved up from 1060px, which is the only change to existing chrome. The
+masthead also widened to 1400px so the row fits, and nav type steps down slightly
+between 1240 and 1400px.
+
+---
+
+## 6. Design system
 
 Tokens live at the top of `assets/css/site.css`.
 
@@ -201,12 +262,12 @@ gold-toned text sits on a light background.
 
 ---
 
-## 6. Verification performed
+## 7. Verification performed
 
 - **Contrast:** 22 foreground/background pairs computed against WCAG 2.1. Lowest
   ratio is 4.83:1 (faint neutral on white). Everything else clears 5:1, most clear 7:1.
-- **Responsive:** no horizontal overflow at 320, 360, 375, 414, 768, 1024, 1280
-  and 1440 px across all ten pages.
+- **Responsive:** no horizontal overflow at 21 widths from 320 to 1920 px across
+  all eleven pages.
 - **Touch targets:** no interactive element under 40px tall at 375px width.
   Buttons, inputs and selects are 48px; pills and small buttons are 44px.
 - **Locator logic:** ZIP search, radius change, filter combinations, card and pin
@@ -216,6 +277,10 @@ gold-toned text sits on a light background.
   in-page anchor resolves to an element that exists.
 - **Logo:** header and footer lockups checked at 390, 1120 and 1440 px. Header
   sits on a single row at every width above the mobile breakpoint.
+- **History page:** 19 additional contrast pairs checked across the archival
+  palette; the two that fell under 4.5:1 were fixed with a darker `--gold-ink`
+  for small gold text. Overflow re-checked at 21 widths from 320 to 1920px.
+  Source modals open, trap focus and close on Escape.
 - **JSON:** schema validated, unique IDs, no missing fields.
 
 Screenshots from these runs are in `shots/`. The map area renders empty in them
@@ -224,7 +289,7 @@ tiles load normally from a browser with internet access.
 
 ---
 
-## 7. Deploying
+## 8. Deploying
 
 Any static host works. For GitHub Pages, push the folder contents to the branch
 you serve from; no Jekyll configuration is needed. Two notes:
@@ -239,7 +304,7 @@ you serve from; no Jekyll configuration is needed. Two notes:
 
 ---
 
-## 8. Notes on the design brief
+## 9. Notes on the design brief
 
 The spec called for TailwindCSS. This build uses hand-authored CSS instead,
 because a multi-page static site with no build step would otherwise need the
