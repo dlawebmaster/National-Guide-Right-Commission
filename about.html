@@ -1097,7 +1097,13 @@ tbody tr:last-child td { border-bottom: 0; }
   border-bottom: 1px solid var(--cream-line);
 }
 .archival h2, .archival h3, .archival h4 { color: var(--ink-archive); }
-.archival p, .archival li { color: var(--sepia-muted); }
+/* Only unclassed prose takes the sepia body colour. Scoping this with
+   :not([class]) stops it outranking every single-class rule inside an
+   archival section, which was turning the eyebrow pill, the primary-source
+   labels and the timeline titles all the same brown. */
+.archival p:not([class]) { color: var(--sepia-muted); }
+.archival .list-check li { color: var(--sepia-muted); }
+.archival .roster p { color: var(--sepia-muted); }
 .archival .lede { color: var(--sepia-muted); }
 .archival .eyebrow--plain { color: var(--crimson); border-bottom-color: var(--gold-deep); }
 .archival .muted { color: var(--sepia-muted); }
