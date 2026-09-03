@@ -48,7 +48,11 @@
   --surface-2:      #F3F4F6;
   --line:           #E5E7EB;
   --line-strong:    #D1D5DB;
-  --ink:            #111827;
+  --ink:            #111827;   /* body text and headings. Never a band background now. */
+  --band:           #70110C;   /* full-width dark bands: utility bar, ink sections, footer, question */
+  --band-ink:       #F6E9E8;   /* body copy on a band */
+  --band-muted:     #E2C9C7;   /* secondary copy on a band */
+  --band-line:      rgba(255,255,255,.28);   /* hairlines on a band */
   --ink-muted:      #4B5563;
   --ink-faint:      #6B7280;
 
@@ -141,9 +145,9 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 .section { padding-block: clamp(3rem, 1.6rem + 5vw, 5.5rem); }
 .section--tight { padding-block: clamp(2.25rem, 1.4rem + 3vw, 3.5rem); }
 .section--surface { background: var(--surface); }
-.section--ink { background: var(--ink); color: var(--white); }
+.section--ink { background: var(--band); color: var(--white); }
 .section--ink h2, .section--ink h3 { color: var(--white); }
-.section--ink p { color: #D6D9DE; }
+.section--ink p { color: var(--band-ink); }
 
 .skip-link {
   position: absolute; left: -9999px; top: 0; z-index: 1000;
@@ -197,7 +201,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
   color: var(--ink-muted);
   line-height: 1.65;
 }
-.section--ink .lede { color: #D6D9DE; }
+.section--ink .lede { color: var(--band-ink); }
 
 .kicker {
   font-size: .8125rem;
@@ -309,8 +313,8 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
    6. Header
    -------------------------------------------------------------------------- */
 .utility {
-  background: var(--ink);
-  color: #D6D9DE;
+  background: var(--band);
+  color: var(--band-ink);
   font-size: .8125rem;
 }
 .utility__inner {
@@ -339,7 +343,9 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2.5rem 0; }
   content: "";
   display: block;
   height: 4px;
-  background: linear-gradient(to right, var(--crimson) 0 70%, var(--gold) 70% 100%);
+  /* The utility bar above is crimson now, so the crimson half of this stripe
+     used to disappear into it. A solid gold rule reads as a clean divider. */
+  background: var(--gold);
 }
 .masthead__inner {
   display: flex;
@@ -597,7 +603,7 @@ body { padding-bottom: 0; }
   letter-spacing: .07em;
   text-transform: uppercase;
   font-weight: 600;
-  color: #F5E6E5;
+  color: var(--band-ink);
   margin-top: .35rem;
 }
 
@@ -700,7 +706,7 @@ body { padding-bottom: 0; }
   background: var(--gold);
   border-radius: 1px;
 }
-.section--ink .list-check li { color: #D6D9DE; }
+.section--ink .list-check li { color: var(--band-ink); }
 
 .stat-line { display: grid; gap: 1.5rem; }
 @media (min-width: 700px) { .stat-line { grid-template-columns: repeat(3, 1fr); } }
@@ -972,9 +978,9 @@ tbody tr:last-child td { border-bottom: 0; }
    11. Footer
    -------------------------------------------------------------------------- */
 .footer {
-  background: var(--ink);
-  color: #C9CDD4;
-  border-top: 5px solid var(--crimson);
+  background: var(--band);
+  color: var(--band-ink);
+  border-top: 5px solid var(--gold);
   padding-block: 3rem 2rem;
   font-size: .9375rem;
 }
@@ -995,17 +1001,17 @@ tbody tr:last-child td { border-bottom: 0; }
 .footer a { color: #E5E7EB; text-decoration: none; }
 .footer a:hover { color: var(--gold); text-decoration: underline; }
 .footer .brand__name, .footer .brand { color: var(--white); }
-.footer .brand__sub { color: #9CA3AF; }
+.footer .brand__sub { color: var(--band-muted); }
 .footer__legal {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #2B3241;
+  border-top: 1px solid var(--band-line);
   display: flex;
   flex-wrap: wrap;
   gap: .5rem 1.5rem;
   justify-content: space-between;
   font-size: .8125rem;
-  color: #9CA3AF;
+  color: var(--band-muted);
 }
 
 /* --------------------------------------------------------------------------
@@ -1195,7 +1201,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 /* --- Founding question --------------------------------------------------- */
 .question {
-  background: var(--ink);
+  background: var(--band);
   color: var(--white);
   border-top: 5px solid var(--gold);
   border-bottom: 5px solid var(--gold);
@@ -1214,9 +1220,9 @@ tbody tr:last-child td { border-bottom: 0; }
   letter-spacing: .09em;
   text-transform: uppercase;
   font-weight: 700;
-  color: #D6D9DE;
+  color: var(--band-muted);
 }
-.question p { color: #D6D9DE; }
+.question p { color: var(--band-ink); }
 
 /* --- Vertical timeline --------------------------------------------------- */
 .tl-wrap { display: grid; gap: 2rem; }
@@ -1440,9 +1446,9 @@ tbody tr:last-child td { border-bottom: 0; }
 .compare li:last-child { border-bottom: 0; padding-bottom: 0; }
 
 /* --- Enduring question band ---------------------------------------------- */
-.enduring { background: var(--crimson); color: var(--white); border-top: 5px solid var(--gold); }
+.enduring { background: var(--band); color: var(--white); border-top: 5px solid var(--gold); }
 .enduring h2, .enduring h3 { color: var(--white); }
-.enduring p { color: #F5E6E5; }
+.enduring p { color: var(--band-ink); }
 .enduring__grid { display: grid; gap: 2rem; align-items: center; }
 @media (min-width: 860px) { .enduring__grid { grid-template-columns: 1fr 1fr; gap: 3.5rem; } }
 .enduring__mark { font-size: .75rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; }
@@ -1654,7 +1660,7 @@ tbody tr:last-child td { border-bottom: 0; }
 .video {
   position: relative;
   aspect-ratio: 16 / 9;
-  background: var(--ink);
+  background: var(--crimson-deep);
   border: 1px solid var(--line);
   border-top: 4px solid var(--crimson);
   border-radius: var(--r-sm);
@@ -1818,7 +1824,7 @@ tbody tr:last-child td { border-bottom: 0; }
             <span class="brand__sub">Kappa Alpha Psi Fraternity, Inc.</span>
           </span>
         </a>
-        <p style="margin-top:1rem;max-width:34ch;color:#9CA3AF;font-size:.875rem;">
+        <p style="margin-top:1rem;max-width:34ch;color:var(--band-muted);font-size:.875rem;">
           Guide Right is the community service and youth mentorship program of Kappa Alpha Psi Fraternity, Inc.
           The Kappa Youth Leadership and Development League, known as Kappa League, is its flagship initiative for young men in grades 6 through 12.
         </p>
