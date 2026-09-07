@@ -27,7 +27,8 @@ assets/js/history.js  Sticky year rail on the history page
 assets/data/chapters.json   SAMPLE chapter records — replace before launch
 assets/img/                 Commission emblem and favicons (see section 4)
 
-history-standalone.html   Self-contained copy of the history page (see section 5)
+standalone/           Self-contained copy of every page (see below)
+make_standalone.py    Regenerates standalone/ from the linked pages
 build.py              Regenerates the eleven HTML files from shared header/footer
 shots/                Verification screenshots from the build
 ```
@@ -231,19 +232,49 @@ rail tracks which entry is in view via IntersectionObserver and marks it with
 mobile the rail is hidden and the timeline collapses to a single chronological
 column.
 
-### Deploying the history page on its own
+### Deploying pages one at a time
 
-`history.html` depends on the updated `assets/css/site.css` (the archival block at
-the bottom) and `assets/js/history.js`. Uploading the page without them gives you
-unstyled sections, no cream ground, no sticky rail and unstyled modals.
+Every page depends on `assets/css/site.css`. Uploading new HTML against a stale
+stylesheet breaks the header: the nav gained a seventh item with History, and the
+breakpoint that hides it moved from 1060px to 1240px. With the old CSS, the
+horizontal nav still appears at 1060px, crushes the wordmark into three or four
+wrapped lines and collides with "About Us."
 
-If you are updating files one at a time rather than deploying the whole folder,
-use `history-standalone.html` instead: it inlines the entire stylesheet and both
-scripts, and embeds the emblem and favicons as data URIs, so it renders correctly
-with zero external dependencies. Rename it to `history.html` on upload. It is
-175 KB because it carries its own copy of the CSS. Once the shared stylesheet is
-deployed, switch back to the linked version so a palette change reaches every
-page at once.
+**The one-file fix is uploading `assets/css/site.css`.** That corrects the header
+on all eleven pages at once.
+
+If you would rather not touch the shared assets, the `standalone/` folder holds a
+self-contained copy of every page. Each one inlines the full stylesheet, its
+scripts, the chapter dataset where the locator needs it, and the emblem and
+favicons as data URIs, so it renders correctly regardless of what is on the
+server. Photographs still load from `assets/img/`, since those are content you
+upload anyway. Files run 156 to 215 KB because each carries its own CSS.
+
+Regenerate them with `python3 make_standalone.py` after any change. Switch back
+to the linked pages once the shared stylesheet is deployed, so a future palette
+change reaches every page at once instead of eleven.
+
+### Chapter portal
+
+The portal lives at `ngr_portal.html` in the site root. It is reached from four
+places, so a chapter officer finds it wherever they happen to be:
+
+- the utility bar, as a compact outlined chip (desktop)
+- the mobile drawer, as a full-width button and a nav entry
+- the footer, under Commission
+- the officer sign-in card on `chapters.html`
+
+It is not a masthead button on purpose. That row already carries seven nav items
+and two buttons, and a third pushes the wordmark into wrapping again below
+1400px. The chip gives the portal button weight without costing the header its
+single-row fit.
+
+**The portal page itself is not in this build.** It lives in the
+`dlawebmaster/dlaguideright` repository as a file named `ngr_portal`, with no
+extension, so GitHub Pages will serve it as a download rather than render it as a
+page. Rename it `ngr_portal.html` and drop it in the site root and every link
+above resolves. If you rename it to something else, change the four `href`
+values in `build.py` and rebuild.
 
 ### Navigation change
 

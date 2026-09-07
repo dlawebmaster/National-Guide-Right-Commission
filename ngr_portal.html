@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGRC Member Home — Redesign Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --crimson:#70110c;
+    --crimson-dark:#4a0c08;
+    --crimson-soft:#fdeceb;
+    --cream:#f2ebd7;
+    --bg:#f6f4ee;
+    --paper:#ffffff;
+    --ink:#241f1c;
+    --ink-soft:#736a5f;
+    --brass:#a67c27;
+    --forest:#2f6b3a;
+    --forest-bg:#e6efe6;
+    --rust:#b5651d;
+    --rust-bg:#f6e9db;
+    --line:#e7e1d3;
+    --shadow:0 1px 3px rgba(36,31,28,.06), 0 1px 2px rgba(36,31,28,.05);
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',sans-serif;font-size:14.5px;line-height:1.5;
+  }
+  h1,h2,h3{font-family:'Source Serif 4',serif;margin:0;}
+  a{color:inherit;text-decoration:none;}
+
+  /* ================= MASTHEAD ================= */
+  .masthead{
+    background:linear-gradient(120deg,var(--crimson) 0%,var(--crimson-dark) 100%);
+    padding:20px 32px 26px;
+  }
+  .masthead-top{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:18px;gap:16px;flex-wrap:wrap;
+  }
+  .brand-mini{display:flex;align-items:center;gap:12px;}
+  .brand-crest{
+    width:42px;height:42px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#2a0d0a,#160504);
+    border:2px solid var(--brass);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--cream);font-size:16px;flex-shrink:0;
+  }
+  .brand-mini span{
+    color:var(--cream);font-weight:800;font-size:13px;letter-spacing:.06em;
+  }
+  .masthead-actions{display:flex;align-items:center;gap:16px;}
+  .bell{
+    position:relative;width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.1);
+    display:flex;align-items:center;justify-content:center;color:var(--cream);font-size:14px;
+  }
+  .bell .dot{
+    position:absolute;top:-3px;right:-3px;background:var(--brass);color:#241a08;
+    font-size:9.5px;font-weight:800;width:16px;height:16px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;border:2px solid var(--crimson-dark);
+  }
+  .user-chip{display:flex;align-items:center;gap:9px;cursor:pointer;}
+  .avatar{
+    width:32px;height:32px;border-radius:50%;
+    background:linear-gradient(135deg,var(--brass),#8a6420);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;
+  }
+  .user-chip span{font-size:13px;font-weight:600;color:var(--cream);}
+  .user-chip i{font-size:10.5px;color:#e7c9c5;}
+
+  .masthead-title .kicker{color:#e7c9c5;font-size:13px;font-weight:500;margin:0 0 5px;}
+  .masthead-title h1{color:var(--paper);font-family:'Inter',sans-serif;font-weight:800;font-size:24px;letter-spacing:.01em;margin-bottom:4px;}
+  .masthead-title .sub{color:#f0e3d3;font-weight:700;font-size:13px;letter-spacing:.03em;}
+
+  /* ================= TOP NAV ================= */
+  .top-nav{
+    position:sticky;top:0;z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 2px 8px rgba(36,31,28,.05);
+  }
+  .top-nav-inner{
+    display:flex;align-items:center;gap:2px;
+    max-width:1180px;margin:0 auto;padding:0 32px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .top-nav-inner::-webkit-scrollbar{display:none;}
+  .top-nav-inner a{
+    display:flex;align-items:center;gap:8px;white-space:nowrap;
+    padding:14px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);
+    border-bottom:3px solid transparent;flex-shrink:0;
+    transition:color .15s ease,border-color .15s ease;
+  }
+  .top-nav-inner a i{font-size:12.5px;color:var(--brass);}
+  .top-nav-inner a:hover{color:var(--crimson);}
+  .top-nav-inner a.active{color:var(--crimson);border-bottom-color:var(--crimson);}
+  .top-nav-inner a.help-link{
+    margin-left:auto;color:var(--brass);
+  }
+  .top-nav-inner a.help-link i{color:var(--brass);}
+  .nav-sep{width:1px;height:20px;background:var(--line);margin:0 6px;flex-shrink:0;}
+
+  /* ================= MAIN ================= */
+  .main-wrap{max-width:1180px;margin:0 auto;padding:26px 32px 60px;}
+
+  /* Hero */
+  .hero{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    padding:44px 40px;margin-bottom:22px;min-height:190px;
+    display:flex;flex-direction:column;justify-content:center;
+    background:
+      radial-gradient(circle at 88% 20%, rgba(166,124,39,.35), transparent 45%),
+      radial-gradient(circle at 15% 85%, rgba(112,17,12,.5), transparent 50%),
+      linear-gradient(120deg,#1c1917 0%, #2b201c 45%, #171412 100%);
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;opacity:.08;
+    background-image:repeating-linear-gradient(45deg,#fff 0 2px,transparent 2px 26px);
+  }
+  .hero-inner{position:relative;z-index:1;}
+  .hero h2{color:#fff;font-size:25px;font-weight:700;margin-bottom:8px;}
+  .hero p{color:#e6ddd4;font-size:14px;margin:0 0 3px;}
+  .hero p.province{color:#c9beb4;font-size:12.5px;letter-spacing:.04em;margin-bottom:20px;}
+  .hero-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--crimson);color:#fff;font-weight:700;font-size:13px;
+    padding:11px 20px;border-radius:8px;width:fit-content;
+    box-shadow:0 4px 14px rgba(112,17,12,.4);
+  }
+
+  /* KPI row */
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;}
+  .kpi-card{
+    background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:18px 18px 16px;
+  }
+  .kpi-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .kpi-icon{
+    width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+  }
+  .kpi-icon.brass{background:#f5ead2;color:var(--brass);}
+  .kpi-icon.rust{background:var(--rust-bg);color:var(--rust);}
+  .kpi-icon.forest{background:var(--forest-bg);color:var(--forest);}
+  .kpi-icon.crimson{background:var(--crimson-soft);color:var(--crimson);}
+  .kpi-top span{font-size:11.5px;font-weight:700;color:var(--ink-soft);letter-spacing:.03em;line-height:1.3;}
+  .kpi-num{font-family:'Source Serif 4',serif;font-size:30px;font-weight:700;color:var(--ink);line-height:1;}
+  .kpi-label{font-size:12px;color:var(--ink-soft);margin:4px 0 12px;}
+  .kpi-track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:12px;}
+  .kpi-fill{height:100%;background:linear-gradient(90deg,var(--brass),#c99a3c);width:0%;border-radius:4px;transition:width 1s ease;}
+  .kpi-link{font-size:12.5px;font-weight:700;color:var(--crimson);display:inline-flex;align-items:center;gap:5px;}
+
+  /* Panel grid */
+  .row{display:grid;gap:16px;margin-bottom:16px;}
+  .row-3{grid-template-columns:1fr 1fr 1fr;}
+  .row-2{grid-template-columns:1.3fr 1fr;}
+
+  .card{
+    background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:20px 20px 18px;
+  }
+  .card h3{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14.5px;color:var(--ink);
+    margin-bottom:16px;display:flex;align-items:center;gap:9px;
+  }
+  .card h3 i{color:var(--brass);font-size:13px;}
+
+  /* Certification stepper */
+  .steps{list-style:none;margin:0 0 16px;padding:0;position:relative;}
+  .steps li{display:flex;align-items:flex-start;gap:14px;position:relative;padding-bottom:20px;}
+  .steps li:last-child{padding-bottom:0;}
+  .steps li::before{
+    content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line);
+  }
+  .steps li:last-child::before{display:none;}
+  .step-dot{
+    width:27px;height:27px;border-radius:50%;flex-shrink:0;z-index:1;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:700;font-family:'Source Serif 4',serif;
+  }
+  .step-dot.done{background:var(--forest);color:#fff;}
+  .step-dot.todo{background:var(--paper);color:var(--crimson);border:2px solid var(--crimson);}
+  .step-text a{font-size:13.5px;font-weight:600;color:var(--ink);}
+  .step-text a:hover{color:var(--crimson);}
+  .step-text p{margin:2px 0 0;font-size:12px;color:var(--ink-soft);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    width:100%;padding:10px 0;border-radius:8px;font-size:13px;font-weight:700;
+  }
+  .btn-solid{background:var(--crimson);color:#fff;}
+  .btn-outline{background:var(--paper);color:var(--crimson);border:1.5px solid var(--crimson);}
+
+  /* Director / details */
+  .director-avatar{
+    width:44px;height:44px;border-radius:50%;background:var(--crimson-soft);color:var(--crimson);
+    display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px;
+  }
+  .director-name{font-family:'Source Serif 4',serif;font-size:16px;font-weight:700;margin-bottom:2px;}
+  .director-role{font-size:12px;color:var(--ink-soft);margin-bottom:14px;}
+  .contact-line{display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:9px;color:var(--ink);}
+  .contact-line i{width:15px;color:var(--brass);font-size:12.5px;}
+
+  .role-pill{
+    display:inline-block;background:var(--forest-bg);color:var(--forest);
+    font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:20px;margin-bottom:14px;
+  }
+  .detail-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;gap:10px;}
+  .detail-row .k{color:var(--ink-soft);}
+  .detail-row .v{font-weight:600;text-align:right;}
+  .detail-row .v.ok{color:var(--forest);}
+
+  /* Missing / list cards */
+  .plain-list{list-style:none;margin:0 0 16px;padding:0;}
+  .plain-list li{display:flex;align-items:center;gap:10px;font-size:13.5px;padding:9px 0;border-bottom:1px solid var(--line);}
+  .plain-list li:last-child{border-bottom:none;}
+  .plain-list li i.warn{color:var(--rust);font-size:13px;}
+  .status-foot{
+    display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-soft);
+    margin:2px 0 16px;
+  }
+  .status-foot b{color:var(--rust);}
+
+  .icon-list{list-style:none;margin:0 0 16px;padding:0;}
+  .icon-list li{display:block;border-bottom:1px solid var(--line);}
+  .icon-list li:last-child{border-bottom:none;}
+  .icon-list a{display:flex;align-items:center;gap:11px;padding:10px 0;font-size:13.5px;color:var(--ink);}
+  .icon-list a:hover{color:var(--crimson);}
+  .icon-list a i.lead{width:16px;color:var(--brass);font-size:13px;flex-shrink:0;}
+  .icon-list a span{flex:1;}
+  .icon-list a i.chev{font-size:11px;color:var(--ink-soft);}
+
+  /* Resources doc list */
+  .doc-list{list-style:none;margin:0 0 16px;padding:0;}
+  .doc-list li{border-bottom:1px solid var(--line);}
+  .doc-list li:last-child{border-bottom:none;}
+  .doc-list a{display:flex;align-items:center;gap:11px;padding:11px 2px;font-size:13.5px;color:var(--ink);}
+  .doc-list a:hover{color:var(--crimson);}
+  .doc-list a i.filetype{width:16px;color:var(--brass);font-size:13.5px;flex-shrink:0;}
+  .doc-list a span.label{flex:1;}
+  .new-flag{background:var(--crimson);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.03em;padding:2px 7px;border-radius:4px;margin-right:8px;}
+  .doc-list a i.chev{font-size:11px;color:var(--ink-soft);}
+
+  /* Awards sub-blocks */
+  .award-block{margin-bottom:14px;}
+  .award-block h4{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+  .award-block.highlight{
+    background:var(--crimson-soft);border-radius:8px;padding:12px 14px;margin-bottom:14px;
+  }
+  .award-block.highlight h4{color:var(--crimson);}
+  .award-block ul{list-style:none;margin:0;padding:0;}
+  .award-block li{margin-bottom:6px;}
+  .award-block a{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);}
+  .award-block a:hover{color:var(--crimson);}
+  .award-block a i{font-size:11.5px;color:var(--brass);width:13px;}
+  .award-block.highlight a i{color:var(--crimson);}
+
+  /* Manual banner */
+  .manual-banner{
+    display:grid;grid-template-columns:1fr 1.1fr;gap:0;
+    border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .manual-left{background:var(--paper);padding:26px 28px;display:flex;gap:16px;align-items:center;}
+  .manual-badge{
+    width:52px;height:66px;background:var(--crimson);color:#fff;flex-shrink:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:'Source Serif 4',serif;font-weight:700;font-size:9.5px;letter-spacing:.06em;line-height:1.3;text-align:center;
+  }
+  .manual-left h3{font-size:16px;color:var(--ink);margin-bottom:6px;font-family:'Inter',sans-serif;font-weight:700;}
+  .manual-left p{font-size:12.5px;color:var(--ink-soft);margin:0 0 14px;line-height:1.5;}
+  .manual-btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--crimson);color:#fff;
+    font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:7px;width:fit-content;
+  }
+  .manual-right{
+    position:relative;
+    background:
+      radial-gradient(circle at 25% 30%, rgba(166,124,39,.5), transparent 55%),
+      linear-gradient(135deg,#2b201c,#161311);
+  }
+  .manual-right::before{
+    content:"";position:absolute;inset:0;opacity:.1;
+    background-image:repeating-linear-gradient(-45deg,#fff 0 2px,transparent 2px 24px);
+  }
+
+  footer{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;color:var(--ink-soft);padding-top:6px;flex-wrap:wrap;gap:8px;
+  }
+  footer .links{display:flex;gap:18px;}
+
+  @media (max-width:1000px){
+    .kpi-row{grid-template-columns:1fr 1fr;}
+    .row-3,.row-2{grid-template-columns:1fr;}
+    .manual-banner{grid-template-columns:1fr;}
+    .manual-right{min-height:120px;}
+  }
+  @media (max-width:760px){
+    .kpi-row{grid-template-columns:1fr;}
+    .masthead{padding:16px 18px 20px;}
+    .main-wrap{padding:20px 16px 50px;}
+    .top-nav-inner{padding:0 12px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-top">
+    <div class="brand-mini">
+      <div class="brand-crest"><i class="fa-solid fa-tower-observation"></i></div>
+      <span>GUIDE RIGHT</span>
+    </div>
+    <div class="masthead-actions">
+      <div class="bell"><i class="fa-regular fa-bell"></i><span class="dot">4</span></div>
+      <div class="user-chip" onclick="location.hash='#details'">
+        <div class="avatar">BT</div>
+        <span>Welcome, Brother Taylor!</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+    </div>
+  </div>
+  <div class="masthead-title">
+    <p class="kicker">Kappa Alpha Psi Fraternity, Inc.</p>
+    <h1>NATIONAL GUIDE RIGHT COMMISSION</h1>
+    <p class="sub">DATA CAPTURE SERVICES</p>
+  </div>
+</header>
+
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="#top" class="active"><i class="fa-solid fa-gauge"></i>Dashboard</a>
+    <a href="#certification"><i class="fa-solid fa-square-check"></i>Certification</a>
+    <a href="#details"><i class="fa-solid fa-id-badge"></i>Profile</a>
+    <a href="#manage"><i class="fa-solid fa-user-gear"></i>Manage Users</a>
+    <a href="#reporting"><i class="fa-solid fa-chart-simple"></i>Reporting</a>
+    <a href="#resources"><i class="fa-solid fa-folder-open"></i>Resources</a>
+    <a href="#awards"><i class="fa-solid fa-trophy"></i>Awards</a>
+    <div class="nav-sep"></div>
+    <a href="https://www.kapsi-ngrc.org/change_password.php"><i class="fa-solid fa-gear"></i>Settings</a>
+    <a href="https://www.kapsi-ngrc.org/logout.php"><i class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+    <a href="mailto:nbacgrp@gmail.com" class="help-link"><i class="fa-solid fa-headset"></i>Help</a>
+  </div>
+</nav>
+
+<div class="main-wrap" id="top">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <h2>Welcome, Brother Taylor!</h2>
+      <p>Denton&#8211;Lewisville (TX) Alumni Chapter</p>
+      <p class="province">SOUTHWESTERN PROVINCE</p>
+      <a class="hero-btn" href="#certification">Continue Certification <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-top"><div class="kpi-icon brass"><i class="fa-solid fa-shield-halved"></i></div><span>CERTIFICATION PROGRESS</span></div>
+      <div class="kpi-num">7%</div>
+      <p class="kpi-label">Overall completion</p>
+      <div class="kpi-track"><div class="kpi-fill" data-pct="7"></div></div>
+      <a class="kpi-link" href="#certification">View Details <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-top"><div class="kpi-icon rust"><i class="fa-solid fa-triangle-exclamation"></i></div><span>MISSING CERTIFICATIONS</span></div>
+      <div class="kpi-num">4</div>
+      <p class="kpi-label">Items missing</p>
+      <div style="height:18px;"></div>
+      <a class="kpi-link" href="#certification">View Details <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-top"><div class="kpi-icon crimson"><i class="fa-solid fa-folder-open"></i></div><span>RESOURCES AVAILABLE</span></div>
+      <div class="kpi-num">8</div>
+      <p class="kpi-label">Guides, slides &amp; video</p>
+      <div style="height:18px;"></div>
+      <a class="kpi-link" href="#resources">View Resources <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-top"><div class="kpi-icon forest"><i class="fa-solid fa-trophy"></i></div><span>AWARDS LINKS</span></div>
+      <div class="kpi-num">4</div>
+      <p class="kpi-label">Chapter, province &amp; reviewer</p>
+      <div style="height:18px;"></div>
+      <a class="kpi-link" href="#awards">View Awards <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+  </div>
+
+  <div class="row row-3" id="certification">
+    <div class="card">
+      <h3><i class="fa-solid fa-list-check"></i>Certification Progress</h3>
+      <ul class="steps">
+        <li>
+          <div class="step-dot todo">1</div>
+          <div class="step-text">
+            <a href="https://www.kapsi-ngrc.org/role_assign.php">Assign Roles</a>
+            <p>20% complete</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-dot todo">2</div>
+          <div class="step-text">
+            <a href="https://www.kapsi-ngrc.org/select_program_type.php">Assign Program Type</a>
+            <p>0% complete</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-dot todo">3</div>
+          <div class="step-text">
+            <span style="font-size:13.5px;font-weight:600;color:var(--ink-soft);">Enter Certification Details</span>
+            <p>0% complete</p>
+          </div>
+        </li>
+      </ul>
+      <a class="btn btn-solid" href="https://www.kapsi-ngrc.org/role_assign.php">Continue Certification</a>
+    </div>
+
+    <div class="card">
+      <h3><i class="fa-solid fa-user-tie"></i>Your Province Guide Right Director</h3>
+      <div class="director-avatar"><i class="fa-solid fa-user"></i></div>
+      <p class="director-name">Sean Seay</p>
+      <p class="director-role">New Braunfels (TX) Alumni</p>
+      <div class="contact-line"><i class="fa-solid fa-phone"></i><a href="tel:9406424400">940-642-4400</a></div>
+      <div class="contact-line"><i class="fa-solid fa-envelope"></i><a href="mailto:nbacgrp@gmail.com">nbacgrp@gmail.com</a></div>
+    </div>
+
+    <div class="card" id="details">
+      <h3><i class="fa-solid fa-id-badge"></i>Your Details</h3>
+      <p style="font-size:11.5px;color:var(--ink-soft);margin-bottom:8px;">Your Role(s)</p>
+      <span class="role-pill">Guide Right Chairman</span>
+      <div class="detail-row"><span class="k">Background Check Date</span><span class="v ok">2025-08-15</span></div>
+      <div class="detail-row"><span class="k">Child Safety Compliance</span><span class="v ok">2026-08-27</span></div>
+      <div class="detail-row"><span class="k">Email Address</span><span class="v" style="font-weight:500;">dlaguideright@dlakappa.org</span></div>
+    </div>
+  </div>
+
+  <div class="row row-3">
+    <div class="card">
+      <h3><i class="fa-solid fa-triangle-exclamation" style="color:var(--rust);"></i>Missing Certification Details</h3>
+      <ul class="plain-list">
+        <li><i class="fa-solid fa-triangle-exclamation warn"></i>Polemarch information missing</li>
+        <li><i class="fa-solid fa-triangle-exclamation warn"></i>Keeper of Records information missing</li>
+        <li><i class="fa-solid fa-triangle-exclamation warn"></i>Guide Right Vice Chairman information missing</li>
+        <li><i class="fa-solid fa-triangle-exclamation warn"></i>Kappa League Coordinator information missing</li>
+      </ul>
+      <p class="status-foot">Current status: <b>In Progress</b></p>
+      <a class="btn btn-outline" href="https://www.kapsi-ngrc.org/role_assign.php">View All Missing Items</a>
+    </div>
+
+    <div class="card" id="manage">
+      <h3><i class="fa-solid fa-user-gear"></i>Manage Users</h3>
+      <ul class="icon-list">
+        <li><a href="https://www.kapsi-ngrc.org/change_password.php"><i class="fa-solid fa-lock lead"></i><span>Change My Password</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/admin_list.php"><i class="fa-solid fa-user-group lead"></i><span>Update GR Committee Profiles</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/volunteer_list.php"><i class="fa-solid fa-people-group lead"></i><span>External Volunteers</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.scouting.org/training/youth-protection/"><i class="fa-solid fa-shield-halved lead"></i><span>Youth Protection Online Training</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+      </ul>
+      <a class="btn btn-outline" href="https://www.kapsi-ngrc.org/admin_list.php">Manage Users</a>
+    </div>
+
+    <div class="card" id="reporting">
+      <h3><i class="fa-solid fa-chart-simple"></i>Reporting</h3>
+      <ul class="icon-list">
+        <li><a href="https://www.kapsi-ngrc.org/gr_stats_rollup.php"><i class="fa-solid fa-chart-column lead"></i><span>Guide Right Rollup Statistics</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/certification_approval_print.php"><i class="fa-solid fa-file-lines lead"></i><span>Print/View Certification Report</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/initiative_setup.php"><i class="fa-solid fa-square-poll-vertical lead"></i><span>Submit Results from a GR Initiative</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/documents/Certification%20FAQs%2009-14-2025.pdf"><i class="fa-solid fa-circle-question lead"></i><span>Certification FAQs</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+      </ul>
+      <a class="btn btn-outline" href="https://www.kapsi-ngrc.org/gr_stats_rollup.php">View Reports</a>
+    </div>
+  </div>
+
+  <div class="row row-2">
+    <div class="card" id="resources">
+      <h3><i class="fa-solid fa-folder-open"></i>Chapter Guide Right Chairmen Resources</h3>
+      <ul class="doc-list">
+        <li><a href="https://www.kapsi-ngrc.org/documents/NGRC%20Awards%20Overview%20for%20GR%20Chairmen%20-%2012-16-2025.pdf"><i class="fa-solid fa-file-pdf filetype"></i><span class="new-flag">NEW</span><span class="label">NGR Awards Process Overview for Guide Right Chairmen</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/documents/NGRC%20Certification%20Overview%20for%20GR%20Chairmen%20-%2009-17-2025.pdf"><i class="fa-solid fa-file-pdf filetype"></i><span class="label">9-17-2025 Guide Right Chairmen Certification Training Slides</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/documents/NGRC%20Zoom%20for%20Certification%20Overview%20for%20GR%20Chairmen.mp4"><i class="fa-solid fa-file-video filetype"></i><span class="label">9-17-2025 Chapter GR Chairmen Certification Training Zoom Mtg</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/documents/Certification%20Quick%20Start%20for%20GR%20Chairmen%20v1.1.pdf"><i class="fa-solid fa-file-pdf filetype"></i><span class="label">Quick Start Guide for Guide Right Chairmen</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://www.kapsi-ngrc.org/documents/Certification%20FAQs%2009-14-2025.pdf"><i class="fa-solid fa-file-pdf filetype"></i><span class="label">Certification FAQs</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="#"><i class="fa-solid fa-file-video filetype"></i><span class="label">National Guide Right Strategic Planning Training Video</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="#"><i class="fa-solid fa-file-powerpoint filetype"></i><span class="label">Guide Right Director National Guide Right Presentation</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+        <li><a href="https://kapsi-ngrc.org/documents/KYLDL%20Manual_26.pdf"><i class="fa-solid fa-book filetype"></i><span class="new-flag">NEW</span><span class="label">2026 Guide Right &#8211; Kappa League Manual</span><i class="fa-solid fa-chevron-right chev"></i></a></li>
+      </ul>
+      <a class="btn btn-outline" href="https://www.kapsi-ngrc.org/documents/Certification%20FAQs%2009-14-2025.pdf">View All Resources</a>
+    </div>
+
+    <div class="card" id="awards">
+      <h3><i class="fa-solid fa-trophy"></i>Awards Management Links</h3>
+      <div class="award-block">
+        <h4>Chapter Awards</h4>
+        <ul>
+          <li><a href="https://www.kapsi-ngrc.org/ngrc_award_chapter_upload.php"><i class="fa-solid fa-upload"></i>Upload Chapter Awards Submissions</a></li>
+          <li><a href="https://www.kapsi-ngrc.org/ngrc_prov_chapter_award_list.php"><i class="fa-solid fa-list"></i>Display Chapter Award Submissions</a></li>
+        </ul>
+      </div>
+      <div class="award-block">
+        <h4>Province Awards</h4>
+        <ul>
+          <li><a href="https://www.kapsi-ngrc.org/prov_reviewer_award_list.php"><i class="fa-solid fa-map"></i>Southwestern Province Awards for Assigned Reviewers</a></li>
+        </ul>
+      </div>
+      <div class="award-block highlight">
+        <h4>NGRC Awards for Reviewers</h4>
+        <ul>
+          <li><a href="https://www.kapsi-ngrc.org/ngrc_reviewer_award_list.php"><i class="fa-solid fa-star"></i>Listing of Awards for Reviewers</a></li>
+        </ul>
+      </div>
+      <a class="btn btn-outline" href="https://www.kapsi-ngrc.org/ngrc_reviewer_award_list.php">View All Awards Links</a>
+    </div>
+  </div>
+
+  <div class="manual-banner">
+    <div class="manual-left">
+      <div class="manual-badge">THE<br>STANDARD</div>
+      <div>
+        <h3>2026 Kappa League Manual</h3>
+        <p>The official guide for Kappa Youth Leadership &amp; Development League programs, policies, and procedures.</p>
+        <a class="manual-btn" href="https://kapsi-ngrc.org/documents/KYLDL%20Manual_26.pdf">Download Manual <i class="fa-solid fa-download"></i></a>
+      </div>
+    </div>
+    <div class="manual-right"></div>
+  </div>
+
+  <footer>
+    <span>&copy; 2026 Kappa Alpha Psi Fraternity, Inc. &middot; National Guide Right Commission</span>
+    <span class="links">
+      <a href="mailto:dlaguideright@dlakappa.org">Contact Us</a>
+    </span>
+  </footer>
+
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded',()=>{
+    document.querySelectorAll('.kpi-fill').forEach(bar=>{
+      const pct=bar.getAttribute('data-pct');
+      requestAnimationFrame(()=>{ bar.style.width=pct+'%'; });
+    });
+  });
+
+  const sections=document.querySelectorAll('.main-wrap [id]');
+  const navLinks=document.querySelectorAll('.top-nav-inner a[href^="#"]');
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        const match=document.querySelector('.top-nav-inner a[href="#'+entry.target.id+'"]');
+        if(match) match.classList.add('active');
+      }
+    });
+  },{rootMargin:'-15% 0px -70% 0px'});
+  sections.forEach(s=>observer.observe(s));
+</script>
+
+</body>
+</html>

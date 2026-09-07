@@ -29,6 +29,7 @@ DRAWER_EXTRA = [
     ("chapters.html", "Chapter Officer Resources"),
     ("locator.html", "Find a Kappa League"),
     ("donate.html", "Support the Commission"),
+    ("ngr_portal.html", "Chapter Portal"),
 ]
 
 
@@ -80,7 +81,7 @@ def header(page):
   <div class="shell utility__inner">
     <span class="utility__tag">Youth leadership and development, grades 6 through 12</span>
     <nav class="utility__links" aria-label="Utility">
-      <a href="chapters.html">Chapter Portal Login</a>
+      <a class="utility__cta" href="ngr_portal.html">Chapter Portal Login</a>
       <a href="about.html#contact">Contact Us</a>
       <a href="donate.html#transparency">Tax-Deductible 501(c)(3) Info</a>
     </nav>
@@ -122,6 +123,7 @@ def header(page):
     <div class="drawer__actions">
       <a class="btn btn--primary btn--block" href="locator.html">Find Kappa League</a>
       <a class="btn btn--gold btn--block" href="donate.html">Donate</a>
+      <a class="btn btn--outline btn--block" href="ngr_portal.html">Chapter Portal Login</a>
     </div>
     <p class="drawer__meta">The National Guide Right Commission is the youth mentorship arm of Kappa Alpha Psi Fraternity, Inc.</p>
   </div>
@@ -141,7 +143,7 @@ FOOTER = """
             <span class="brand__sub">Kappa Alpha Psi Fraternity, Inc.</span>
           </span>
         </a>
-        <p style="margin-top:1rem;max-width:34ch;color:#9CA3AF;font-size:.875rem;">
+        <p style="margin-top:1rem;max-width:34ch;color:var(--band-muted);font-size:.875rem;">
           Guide Right is the community service and youth mentorship program of Kappa Alpha Psi Fraternity, Inc.
           The Kappa Youth Leadership and Development League, known as Kappa League, is its flagship initiative for young men in grades 6 through 12.
         </p>
@@ -171,6 +173,7 @@ FOOTER = """
           <li><a href="history.html">Guide Right History</a></li>
           <li><a href="about.html#leadership">Leadership</a></li>
           <li><a href="about.html#contact">Contact</a></li>
+          <li><a href="ngr_portal.html">Chapter Portal</a></li>
           <li><a href="donate.html#transparency">501(c)(3) Information</a></li>
         </ul>
       </div>
@@ -1397,8 +1400,8 @@ def build_chapters():
     <aside class="card card--crimson">
       <h3>Officer login</h3>
       <p class="small muted">Fraternity credentials required.</p>
-      <a class="btn btn--primary btn--block" href="#portal">Sign in to the chapter portal</a>
-      <p class="form-note">Single sign-on not yet connected in this build.</p>
+      <a class="btn btn--primary btn--block" href="ngr_portal.html">Sign in to the chapter portal</a>
+      <p class="form-note">Opens the NGRC member portal.</p>
     </aside>
   </div>
 </section>
@@ -1798,7 +1801,7 @@ def build_history():
       </div>
       <div>
         <p class="enduring__mark">Today</p>
-        <p class="lede" style="color:#F5E6E5;">More than a century later, Guide Right continues helping young men explore that question through mentorship, education, leadership, service, career preparation, and personal development.</p>
+        <p class="lede" style="color:var(--band-ink);">More than a century later, Guide Right continues helping young men explore that question through mentorship, education, leadership, service, career preparation, and personal development.</p>
       </div>
     </div>
     <p class="enduring__close">The methods have evolved.<br>The responsibility endures.</p>
